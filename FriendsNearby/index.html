@@ -12,6 +12,7 @@
     </script>
 </head>
 
+<script src="./script.js"></script>
 <body style='margin: 0; overflow: hidden;'>
     <a-scene
         vr-mode-ui="enabled: false"
@@ -19,7 +20,8 @@
         arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
         
         <a-camera gps-camera rotation-reader></a-camera>
+        <a-imave src="./assets/picture/BGSong.png" gps-entity-place="longitude: 126.887220; latitude: 37.526619;"></a-imave>
 
-        <a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 0 0" scale="0.03 0.03 0.03" gps-entity-place="longitude: 126.887220; latitude: 37.526619;" animation-mixer/>
+    <!--    <a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 0 0" scale="0.03 0.03 0.03" gps-entity-place="longitude: 126.887220; latitude: 37.526619;" animation-mixer/> -->
 	</a-scene>
 </body>
