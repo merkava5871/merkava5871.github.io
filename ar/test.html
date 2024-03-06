@@ -18,7 +18,9 @@
 		embedded
         arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
         
-        <a-entity gps-camera rotation-reader smooth="factor:5"></a-entity>
+        <a-camera gps-camera rotation-reader ></a-camera>
+	<a-entity smooth="factor:5"></a-entity>
+	    
         <a-image src="./assets/BGSong.png" rotation="0 0 0" scale="10 10 10" gps-entity-place="longitude: 127.058304; latitude: 37.507654;"></a-image>
 
 	</a-scene>
