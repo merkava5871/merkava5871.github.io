@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Lucent Test</title>
-    <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
+    <script src='https://aframe.io/releases/1.2.0/aframe.min.js'></script>
     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
     <script>
@@ -18,7 +18,7 @@
 		embedded
         arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
         
-        <a-camera gps-camera rotation-reader></a-camera>
+        <a-camera gps-camera rotation-reader smooth="factor:5"></a-camera>
         <a-image src="./assets/BGSong.png" rotation="0 0 0" scale="10 10 10" gps-entity-place="longitude: 127.058304; latitude: 37.507654;"></a-image>
 
 	</a-scene>
