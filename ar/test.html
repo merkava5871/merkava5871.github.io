@@ -27,4 +27,44 @@
       	</a-entity>
 
 	</a-scene>
+
+<!-- 캡처 버튼 -->
+    <button id="captureButton">화면 캡처</button>
+
+    <script>
+      // 캡처 버튼 클릭 이벤트 리스너
+      document.getElementById('captureButton').addEventListener('click', function() {
+        // canvas 엘리먼트 생성
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+
+        // canvas 크기 설정
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // canvas에 현재 화면 그리기
+        var scene = document.querySelector('a-scene');
+        var renderer = scene.renderer;
+        var vrScene = renderer.xr.getSession() ? renderer.xr.getSession().renderState.baseLayer : renderer.domElement;
+        ctx.drawImage(vrScene, 0, 0);
+
+	// 이미지로 저장 (브라우저 다운로드)
+        var link = document.createElement('a');
+        link.download = 'ar_capture_' + generateFileName() + '.png'; // 파일 이름 생성
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+
+      // 파일 이름 생성 함수 (현재 시간 기반)
+      function generateFileName() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = ('0' + (now.getMonth() + 1)).slice(-2);
+        var day = ('0' + now.getDate()).slice(-2);
+        var hour = ('0' + now.getHours()).slice(-2);
+        var minute = ('0' + now.getMinutes()).slice(-2);
+        var second = ('0' + now.getSeconds()).slice(-2);
+        return year + month + day + '_' + hour + minute + second;
+      }
+    </script>
 </body>
