@@ -29,8 +29,11 @@
 	<!-- 캡처 버튼 -->
         <a-entity position="0 0 -3">
         <a-plane id="captureButton" color="green" width="0.5" height="0.2" position="0 0 0" material="transparent: true; opacity: 0.5"></a-plane>
-        <a-text value="화면 캡처" color="white" align="center" position="0 0 0.01"></a-text>
+        <a-text value="Capture" color="white" align="center" position="0 0 0.01"></a-text>
         </a-entity>
+
+	<!-- 캡처 버튼 클릭 이벤트 핸들러 -->
+        <a-entity id="raycaster" raycaster="objects: #captureButton" cursor-listener></a-entity>
 
 	</a-scene>
 
@@ -40,7 +43,13 @@
 
     <script>
       // 캡처 버튼 클릭 이벤트 리스너
-      document.getElementById('captureButton').addEventListener('click', function() {
+<!--       document.getElementById('captureButton').addEventListener('click', function() { -->
+
+	// 캡처 버튼 클릭 이벤트 리스너
+      AFRAME.registerComponent('cursor-listener', {
+        init: function () {
+          var el = this.el;
+          el.addEventListener('click', function () {
         // canvas 엘리먼트 생성
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
