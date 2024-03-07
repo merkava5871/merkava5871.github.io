@@ -26,10 +26,17 @@
         	<a-text value="BGsong" color="black" width="4" align="center"></a-text>
       	</a-entity>
 
+	<!-- 캡처 버튼 -->
+        <a-entity position="0 0 -3">
+        <a-plane id="captureButton" color="green" width="0.5" height="0.2" position="0 0 0" material="transparent: true; opacity: 0.5"></a-plane>
+        <a-text value="화면 캡처" color="white" align="center" position="0 0 0.01"></a-text>
+        </a-entity>
+
 	</a-scene>
 
-<!-- 캡처 버튼 -->
+<!-- 캡처 버튼 
     <button id="captureButton">화면 캡처</button>
+-->
 
     <script>
       // 캡처 버튼 클릭 이벤트 리스너
