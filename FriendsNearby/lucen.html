@@ -1,27 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>GeoAR.js demo</title>
-    <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
-    <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+  <head>
+    <title>Aframe AR - 거리 기반 이미지 크기 조정</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://rawcdn.githack.com/AR-js-org/AR.js/2.2.0/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-gps-camera.min.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      
+      <!-- GPS 카메라 설정 -->
+      <a-entity gps-camera rotation-reader></a-entity>
+
+      <!-- GPS 기반 이미지 요소 -->
+      <a-image id="dynamicImage" gps-entity-place="latitude: 37.507173; longitude: 127.058588" src="./assets/picture/HAE.png" 
+               scale="1 1 1" position="0 2 0"></a-image>
+               
+    </a-scene>
+
     <script>
-        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
+      // 이미지 거리 기반 크기 조정
+      document.querySelector('a-scene').addEventListener('loaded', () => {
+        const dynamicImage = document.getElementById('dynamicImage');
+        const camera = document.querySelector('[gps-camera]');
+
+        camera.addEventListener('gps-camera-update-position', e => {
+          const userPosition = camera.components['gps-camera'].currentCoords;
+          const imagePosition = dynamicImage.components['gps-entity-place'].attrValue;
+
+          // Haversine 공식으로 두 지점 간의 거리 계산 (미터 단위)
+          const R = 6371e3; // 지구 반지름 (미터)
+          const φ1 = userPosition.latitude * Math.PI/180;
+          const φ2 = imagePosition.latitude * Math.PI/180;
+          const Δφ = (imagePosition.latitude - userPosition.latitude) * Math.PI/180;
+          const Δλ = (imagePosition.longitude - userPosition.longitude) * Math.PI/180;
+
+          const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+          const distance = R * c;
+
+          // 거리에 따라 이미지 크기 조정 (거리 가까울수록 크기 큼)
+          const scale = Math.max(1, 1000 / distance); // 최소 크기는 1, 거리가 가까울수록 더 커짐
+          dynamicImage.setAttribute('scale', `${scale} ${scale} ${scale}`);
+        });
+      });
     </script>
-</head>
-
-<!--<script src="./script.js"></script>-->
-<body style='margin: 0; overflow: hidden;'>
-    <a-scene
-        vr-mode-ui="enabled: false"
-		embedded
-        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
-        
-        <a-camera gps-camera rotation-reader></a-camera>
-        <a-image src="./assets/picture/mkjoo_1.png" rotation="0 -180 0" scale="50 50 10" gps-entity-place="longitude: 127.058588; latitude: 37.507173;"></a-image>
-
-    <!--    <a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 0 0" scale="0.03 0.03 0.03" gps-entity-place="longitude: 126.887220; latitude: 37.526619;" animation-mixer/> -->
-	</a-scene>
-</body>
+  </body>
+</html>
