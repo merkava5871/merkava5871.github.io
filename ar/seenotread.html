@@ -98,10 +98,10 @@
         <!-- 이미지 표시 객체 -->
         <!-- 평면 이미지 박스 입체로 표현 -->
         <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
-        <a-entity geometry="primitive: box; height: 2; width: 2; depth: 0.3"
+        <!-- <a-entity geometry="primitive: box; height: 2; width: 2; depth: 0.3"
             material="src: https://made-by-bg.s3.ap-northeast-2.amazonaws.com/Jiahn.png; side: double;"
             gps-entity-place="latitude: 37.526590; longitude: 126.887970;" look-at="[gps-camera]" scale="1 1 1"
-            position="0 0 0"></a-entity>
+            position="0 0 0"></a-entity> -->
 
         <!-- 평면 이미지 표현 -->
         <!--       <a-image
@@ -150,6 +150,10 @@
             .catch(err => {
                 console.error('❗ JSON 로딩 실패:', err);
             });
+
+        // 타겟 GPS 변수
+        let targetLat = null;
+        let targetLon = null;
 
         // 현재위치 표시
         const gpsDisplay = document.getElementById("gpsDisplay");
@@ -218,9 +222,7 @@
         });
 
 
-        // 타겟 GPS 변수
-        let targetLat = null;
-        let targetLon = null;
+
 
 
         // 타겟 위치 입력,저장
@@ -258,15 +260,16 @@
         document.getElementById("captureBtn").addEventListener("click", () => {
             const target = document.querySelector("a-scene"); // 또는 document.body 전체 캡처도 가능
 
-            html2canvas(target, {
+            html2canvas(document.body, {
                 useCORS: true,
                 allowTaint: true
             }).then(canvas => {
                 const link = document.createElement("a");
-                link.download = `screenshot-${Date.now()}.png`;
-                link.href = canvas.toDataURL("image/png");
+                link.download = `screenshot-${Date.now()}.jpg`;
+                link.href = canvas.toDataURL("image/jpeg", 0.92); // ← 여기서 JPEG로 지정
                 link.click();
             });
+
         });
 
 
