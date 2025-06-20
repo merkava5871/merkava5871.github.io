@@ -161,6 +161,11 @@ function showArrivalMessage() {
     },
     { enableHighAccuracy: true }
   );
+
+  document.getElementById("toggleFormBtn").addEventListener("click", () => {
+  const form = document.getElementById("targetForm");
+  form.style.display = (form.style.display === "none") ? "block" : "none";
+});
 </script>
 
 
