@@ -4,6 +4,7 @@
     <title>GPS AR Demo</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene
@@ -20,6 +21,13 @@
         look-at="[gps-camera]"
         scale="5 5 5"
       ></a-image>
+
+      <a-entity
+        geometry="primitive: plane; height: 2; width: 2"
+        material="shader: gif; src: url(https://made-by-bg.s3.ap-northeast-2.amazonaws.com/arrow_direction_spin_right_md_nwm_v2.gif)"
+        position="0 1.5 -3"
+      ></a-entity>
+
     </a-scene>
   </body>
 </html>
