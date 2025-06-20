@@ -39,7 +39,7 @@
         scale="1 1 1"
         material="color: white; transparent: true; opacity: 1;"
         style="border: 2px solid red;"
-        positon="0 2 0"
+        positon="0 2 -3"
       ></a-image>
 
 <!--       <a-entity
@@ -49,20 +49,42 @@
       ></a-entity> -->
     </a-scene>
 
-    <script>
-      const gpsDisplay = document.getElementById("gpsDisplay");
+<script>
+  const gpsDisplay = document.getElementById("gpsDisplay");
 
-      navigator.geolocation.watchPosition(
-        (pos) => {
-          const lat = pos.coords.latitude.toFixed(6);
-          const lon = pos.coords.longitude.toFixed(6);
-          gpsDisplay.textContent = `📍 위도: ${lat}, 경도: ${lon}`;
-        },
-        (err) => {
-          gpsDisplay.textContent = "❗ GPS 정보를 가져올 수 없습니다.";
-        },
-        { enableHighAccuracy: true }
-      );
-    </script>
+  // 타겟 위치 (예: 이미지가 있는 위치)
+  const targetLat = 37.526590;
+  const targetLon = 126.887970;
+
+  function haversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000; // Earth radius in meters
+    const toRad = deg => deg * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2)**2 +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon/2)**2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lon = pos.coords.longitude.toFixed(6);
+      const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "알 수 없음";
+
+      const distance = haversineDistance(pos.coords.latitude, pos.coords.longitude, targetLat, targetLon).toFixed(1);
+
+      gpsDisplay.textContent =
+        `📍 위도: ${lat}\n📍 경도: ${lon}\n📏 거리: ${distance}m\n🗻 고도: ${alt}`;
+    },
+    (err) => {
+      gpsDisplay.textContent = "❗ GPS 정보를 가져올 수 없습니다.";
+    },
+    { enableHighAccuracy: true }
+  );
+</script>
+
   </body>
 </html>
