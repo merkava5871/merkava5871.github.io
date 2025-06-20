@@ -23,7 +23,7 @@
             z-index: 999;
             white-space: pre-line;
         }
-        
+
         /* 목적지 GPS 입력 창 */
         #targetForm {
             position: absolute;
@@ -78,8 +78,8 @@
         <a-camera gps-camera rotation-reader></a-camera>
 
         <!-- 이미지 표시 객체 -->
-         <!-- 평면 이미지 박스 입체로 표현 -->
-          <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
+        <!-- 평면 이미지 박스 입체로 표현 -->
+        <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
         <a-entity geometry="primitive: box; height: 2; width: 2; depth: 0.3"
             material="src: https://made-by-bg.s3.ap-northeast-2.amazonaws.com/Jiahn.png; side: double;"
             gps-entity-place="latitude: 37.526590; longitude: 126.887970;" look-at="[gps-camera]" scale="1 1 1"
@@ -104,25 +104,25 @@
     </a-scene>
 
     <script>
-  fetch('https://made-by-bg.s3.ap-northeast-2.amazonaws.com/images.json')
-    .then(response => response.json())
-    .then(data => {
-      const scene = document.querySelector('a-scene');
-      data.forEach((item, index) => {
-        const entity = document.createElement('a-image');
-        entity.setAttribute('src', item.src);
-        entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
-        entity.setAttribute('look-at', '[gps-camera]');
-        entity.setAttribute('scale', item.scale || '1 1 1');
-        entity.setAttribute('position', item.position || '0 0 0');
-        entity.setAttribute('material', 'side: double; transparent: true; opacity: 1;');
-        entity.setAttribute('id', `image-${index}`);
-        scene.appendChild(entity);
-      });
-    })
-    .catch(err => {
-      console.error('❗ JSON 로딩 실패:', err);
-    });
+        fetch('https://made-by-bg.s3.ap-northeast-2.amazonaws.com/images.json')
+            .then(response => response.json())
+            .then(data => {
+                const scene = document.querySelector('a-scene');
+                data.forEach((item, index) => {
+                    const entity = document.createElement('a-image');
+                    entity.setAttribute('src', item.src);
+                    entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
+                    entity.setAttribute('look-at', '[gps-camera]');
+                    entity.setAttribute('scale', item.scale || '1 1 1');
+                    entity.setAttribute('position', item.position || '0 0 0');
+                    entity.setAttribute('material', 'side: double; transparent: true; opacity: 1;');
+                    entity.setAttribute('id', `image-${index}`);
+                    scene.appendChild(entity);
+                });
+            })
+            .catch(err => {
+                console.error('❗ JSON 로딩 실패:', err);
+            });
         // 타겟 GPS 변수
         let targetLat = null;
         let targetLon = null;
