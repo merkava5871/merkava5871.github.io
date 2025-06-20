@@ -53,12 +53,18 @@
   <body style="margin: 0; overflow: hidden;">
     <div id="gpsDisplay">📍 위치 확인 중...</div>
 
-<div id="targetForm">
-  🎯 타겟 위치 입력<br/>
+<!-- 토글 버튼 -->
+<button id="toggleFormBtn" style="position: absolute; top: 100px; right: 10px; z-index: 999;">
+  🎯 타겟 위치 설정
+</button>
+
+<!-- 타겟 입력 폼 -->
+<div id="targetForm" style="display: none; position: absolute; top: 140px; right: 10px; background: #fff; padding: 10px; border-radius: 6px; z-index: 999;">
   위도: <input type="number" id="targetLat" step="0.000001"><br/>
   경도: <input type="number" id="targetLon" step="0.000001"><br/>
   <button onclick="updateTarget()">적용</button>
 </div>
+
 
 <div id="arrivalMessage">🎉 타겟 위치에 도착했습니다!</div>    
     <a-scene
@@ -75,7 +81,7 @@
   gps-entity-place="latitude: 37.526590; longitude: 126.887970;"
   look-at="[gps-camera]"
   scale="1 1 1"
-  position="0 1 3"
+  position="0 1 -3"
 ></a-entity>
       
 <!--       <a-image
