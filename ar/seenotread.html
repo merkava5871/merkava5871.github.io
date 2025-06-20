@@ -151,6 +151,43 @@
                 console.error('❗ JSON 로딩 실패:', err);
             });
 
+        // 현재위치 표시
+        const gpsDisplay = document.getElementById("gpsDisplay");
+        navigator.geolocation.watchPosition(
+            (pos) => {
+                const lat = pos.coords.latitude.toFixed(6);
+                const lon = pos.coords.longitude.toFixed(6);
+                const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "알 수 없음";
+
+                let distanceStr = "타겟 미설정";
+                if (targetLat && targetLon) {
+                    const distance = haversineDistance(pos.coords.latitude, pos.coords.longitude, targetLat, targetLon);
+                    distanceStr = distance.toFixed(1) + "m";
+
+                    // 타겟까지의 거리가 10m 이내면 메세지 표시시
+                    if (distance < 10 && !hasArrived) {
+                        showArrivalMessage();
+                        hasArrived = true;
+                    } else if (distance >= 10) {
+                        hasArrived = false; // 다시 멀어지면 리셋
+                    }
+                }
+
+                gpsDisplay.textContent =
+                    `📍 위도: ${lat}\n📍 경도: ${lon}\n📏 거리: ${distanceStr}\n🗻 고도: ${alt}`;
+            },
+            (err) => {
+                gpsDisplay.textContent = "❗ GPS 정보를 가져올 수 없습니다.";
+            },
+            { enableHighAccuracy: true }
+        );
+
+        // 토글 버튼 펼치기, 줄이기기
+        document.getElementById("toggleFormBtn").addEventListener("click", () => {
+            const form = document.getElementById("targetForm");
+            form.style.display = (form.style.display === "none") ? "block" : "none";
+        });
+
         //거리에 맞춰 이미지 크기 조정
         AFRAME.registerComponent('distance-scaler', {
             schema: {
@@ -181,24 +218,20 @@
         });
 
 
-
-
-
         // 타겟 GPS 변수
         let targetLat = null;
         let targetLon = null;
 
-        // 타겟 도착 이미지
-        const arrivalMessage = document.getElementById("arrivalMessage");
-        let hasArrived = false; // 중복 메시지 방지
-        function showArrivalMessage() {
-            arrivalMessage.style.display = 'block';
-            setTimeout(() => {
-                arrivalMessage.style.display = 'none';
-            }, 4000); // 4초 후 자동 숨김
+
+        // 타겟 위치 입력,저장
+        function updateTarget() {
+            targetLat = parseFloat(document.getElementById("targetLat").value);
+            targetLon = parseFloat(document.getElementById("targetLon").value);
+            alert(`✔️ 타겟 위치 설정됨: ${targetLat}, ${targetLon}`);
         }
 
-        // 현재위치에서 타겟까지의 거리 계산산
+
+        // 현재위치에서 타겟까지의 거리 계산
         function haversineDistance(lat1, lon1, lat2, lon2) {
             const R = 6371000;
             const toRad = deg => deg * Math.PI / 180;
@@ -211,23 +244,31 @@
             return R * c;
         }
 
-        // 타겟 위치 입력,저장장
-        function updateTarget() {
-            targetLat = parseFloat(document.getElementById("targetLat").value);
-            targe튼
-            document.getElementById("captureBtn").addEventListener("click", () => {
-                const target = document.querySelector("a-scene"); // 또는 document.body 전체 캡처도 가능
+        // 타겟 도착 메세지
+        const arrivalMessage = document.getElementById("arrivalMessage");
+        let hasArrived = false; // 중복 메시지 방지
+        function showArrivalMessage() {
+            arrivalMessage.style.display = 'block';
+            setTimeout(() => {
+                arrivalMessage.style.display = 'none';
+            }, 4000); // 4초 후 자동 숨김
+        }
 
-                html2canvas(target, {
-                    useCORS: true,
-                    allowTaint: true
-                }).then(canvas => {
-                    const link = document.createElement("a");
-                    link.download = `screenshot-${Date.now()}.png`;
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                });
+        // 캡쳐버튼
+        document.getElementById("captureBtn").addEventListener("click", () => {
+            const target = document.querySelector("a-scene"); // 또는 document.body 전체 캡처도 가능
+
+            html2canvas(target, {
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = `screenshot-${Date.now()}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
             });
+        });
+
 
     </script>
 
