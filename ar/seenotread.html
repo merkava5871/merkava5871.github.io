@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>HAE AR by SZG</title>
+    <title>HAE AR by BG</title>
     <!--     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script> -->
     <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
@@ -59,20 +59,20 @@
 
     <!-- 토글 버튼, 타겟 입력 창 펼치기기 -->
     <button id="toggleFormBtn" style="position: absolute; top: 100px; right: 10px; z-index: 999;">
-        🎯 타겟 위치 설정
+        🎯 Input Target
     </button>
 
 
     <!-- 타겟 입력 폼 -->
     <div id="targetForm"
         style="display: none; position: absolute; top: 140px; right: 10px; background: #fff; padding: 10px; border-radius: 6px; z-index: 999;">
-        위도: <input type="number" id="targetLat" step="0.000001"><br />
-        경도: <input type="number" id="targetLon" step="0.000001"><br />
-        <button onclick="updateTarget()">적용</button>
+        Lat: <input type="number" id="targetLat" step="0.000001"><br />
+        Lon: <input type="number" id="targetLon" step="0.000001"><br />
+        <button onclick="updateTarget()">Apply</button>
     </div>
 
     <!-- 타겟 근처 메세지 내용 -->
-    <div id="arrivalMessage">🎉 타겟 위치에 도착했습니다!</div>
+    <div id="arrivalMessage">🎉 You are near the target!</div>
 
     <a-scene vr-mode-ui="enabled: false" embedded
         arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
@@ -144,9 +144,9 @@
             (pos) => {
                 const lat = pos.coords.latitude.toFixed(6);
                 const lon = pos.coords.longitude.toFixed(6);
-                const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "알 수 없음";
+                const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "none";
 
-                let distanceStr = "타겟 미설정";
+                let distanceStr = "No target";
                 if (targetLat && targetLon) {
                     const distance = haversineDistance(pos.coords.latitude, pos.coords.longitude, targetLat, targetLon);
                     distanceStr = distance.toFixed(1) + "m";
@@ -161,10 +161,10 @@
                 }
 
                 gpsDisplay.textContent =
-                    `↔️ 위도: ${lat}\n↕️ 경도: ${lon}\n📏 거리: ${distanceStr}\n🗻 고도: ${alt}`;
+                    `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n📏 Dis: ${distanceStr}\n🗻 Alt: ${alt}`;
             },
             (err) => {
-                gpsDisplay.textContent = "❗ GPS 정보를 가져올 수 없습니다.";
+                gpsDisplay.textContent = "❗ GPS not Found.";
             },
             { enableHighAccuracy: true }
         );
@@ -209,7 +209,7 @@
         function updateTarget() {
             targetLat = parseFloat(document.getElementById("targetLat").value);
             targetLon = parseFloat(document.getElementById("targetLon").value);
-            alert(`✔️ 타겟 위치 설정됨: ${targetLat}, ${targetLon}`);
+            alert(`✔️ Target applied!: ${targetLat}, ${targetLon}`);
         }
 
 
