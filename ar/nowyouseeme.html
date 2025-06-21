@@ -75,8 +75,7 @@
     <!-- 타겟 근처 메세지 내용 -->
     <div id="arrivalMessage">🎉 You are near the target!</div>
 
-    <a-scene vr-mode-ui="enabled: false" embedded
-        arjs="sourceType: webcam; gpsMinAccuracy: 50; debugUIEnabled: false;">
+    <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; gpsMinAccuracy: 50; debugUIEnabled: false;">
         <a-camera gps-camera rotation-reader></a-camera>
 
         <!-- 이미지 표시 객체 -->
@@ -257,6 +256,29 @@
                 arrivalMessage.style.display = 'none';
             }, 4000); // 4초 후 자동 숨김
         }
+
+
+
+        function downloadFile(url, filename) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function extractFromMaterial(materialStr) {
+            const match = materialStr.match(/src:\s*(\S+?)(;|$)/);
+            return match ? match[1] : '';
+        }
+
+        entity.addEventListener('click', () => {
+            const url = extractFromMaterial(item.material);
+            const ext = url.split('.').pop().split('?')[0];
+            const filename = `ar-content-${Date.now()}.${ext}`;
+            downloadFile(url, filename);
+        });
 
 
     </script>
