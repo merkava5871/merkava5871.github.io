@@ -20,7 +20,7 @@
     "maxDistance": 100
   },
   {
-    "geometry": "primitive: plane; width: 2; height: 2",
+    "geometry": "primitive: box; width: 2; height: 2; depth: 2",
     "material": "shader: gif; src: url(https://d2i253d5k7v4zj.cloudfront.net/arrow_direction_spin_right_md_nwm_v2.gif)",
     "latitude": 37.526590,
     "longitude": 126.887970,
