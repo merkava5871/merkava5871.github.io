@@ -121,6 +121,14 @@
                     entity.setAttribute('id', `entity-${i}`);
                     // entity.setAttribute('smooth-follow', 'factor: 0.1');
 
+                    // 발견 오브젝트 이미지 다운로드 기능 설정
+                    entity.addEventListener('click', () => {
+                        const url = extractFromMaterial(item.material);
+                        const ext = url.split('.').pop().split('?')[0];
+                        const filename = `ar-content-${Date.now()}.${ext}`;
+                        downloadFile(url, filename);
+                    });
+
                     // 거리 기반 스케일 적용
                     const base = (item.baseScale || '1 1 1').split(' ').map(Number);
                     entity.setAttribute('distance-scaler', {
@@ -257,7 +265,7 @@
             }, 4000); // 4초 후 자동 숨김
         }
 
-        // 발견 오브젝트 이미지 다운로드후 파일명 시간으로 변경
+        // 오브젝트 다운로드 
         function downloadFile(url, filename) {
             const link = document.createElement('a');
             link.href = url;
@@ -268,16 +276,11 @@
         }
 
         function extractFromMaterial(materialStr) {
-            const match = materialStr.match(/src:\s*(\S+?)(;|$)/);
-            return match ? match[1] : '';
+            const match = materialStr.match(/src:\s*(?:url\()?(\S+?)(?:\)|;|$)/);
+            return match ? match[1].replace(/['"]/g, '') : '';
         }
 
-        entity.addEventListener('click', () => {
-            const url = extractFromMaterial(item.material);
-            const ext = url.split('.').pop().split('?')[0];
-            const filename = `ar-content-${Date.now()}.${ext}`;
-            downloadFile(url, filename);
-        });
+
 
 
     </script>
