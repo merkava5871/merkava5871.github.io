@@ -128,8 +128,8 @@
                     } 
 
                     // 발견 오브젝트 이미지 다운로드 기능 설정
-                    entity.addEventListener('click', () => {
-                    //entity.addEventListener('touchstart', () => {
+                    //entity.addEventListener('click', () => {
+                    entity.addEventListener('touchstart', () => {
                         const url = extractFromMaterial(item.material);
                         const ext = url.split('.').pop().split('?')[0];
                         const filename = `ar-content-${Date.now()}.${ext}`;
