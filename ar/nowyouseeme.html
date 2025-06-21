@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>NowYouSeeMe by BG</title>
+    <title>HAE AR by BG</title>
     <meta charset="UTF-8">
     <!--     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script> -->
     <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
@@ -76,7 +76,8 @@
     <div id="arrivalMessage">🎉 You are near the target!</div>
 
     <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; gpsMinAccuracy: 50; debugUIEnabled: false;">
-        <a-camera gps-camera rotation-reader></a-camera>
+        <a-camera gps-camera rotation-reader cursor="rayOrigin: mouse"></a-camera>
+
 
         <!-- 이미지 표시 객체 -->
         <!-- 평면 이미지 박스 입체로 표현 -->
@@ -128,6 +129,7 @@
 
                     // 발견 오브젝트 이미지 다운로드 기능 설정
                     entity.addEventListener('click', () => {
+                    //entity.addEventListener('touchstart', () => {
                         const url = extractFromMaterial(item.material);
                         const ext = url.split('.').pop().split('?')[0];
                         const filename = `ar-content-${Date.now()}.${ext}`;
