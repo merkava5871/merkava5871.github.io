@@ -5,7 +5,7 @@
     "latitude": 37.526676,
     "longitude": 126.887700,
     "position": "0 3 -3"
-    "rotation": "0 0 0",,
+    "rotation": "0 0 0",
     "scale": "1 1 1",
     "baseScale": "3 3 3",
     "maxDistance": 100
@@ -16,7 +16,7 @@
     "latitude": 37.526676,
     "longitude": 126.887700,
     "position": "0 6 0"
-    "rotation": "0 0 0",,
+    "rotation": "0 0 0",
     "scale": "1 1 1",
     "baseScale": "3 3 3",
     "maxDistance": 100
