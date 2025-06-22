@@ -75,14 +75,17 @@
 
     <a-scene vr-mode-ui="enabled: false" embedded
         arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
-        <a-camera gps-camera rotation-reader></a-camera>
+        <a-camera gps-camera rotation-reader sky-detector></a-camera>
 
         <!-- 이미지 표시 객체 -->
+<a-entity id="skyMessage" position="0 10 0"
+            text="value: ☁️ 하늘을 향해 비추셨군요!; align: center; color: yellow; width: 6" visible="false"></a-entity>
+        
          <!-- 평면 이미지 박스 입체로 표현 -->
           <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
         <a-entity geometry="primitive: box; height: 2; width: 2; depth: 0.3"
             material="src: https://made-by-bg.s3.ap-northeast-2.amazonaws.com/Jiahn.png; side: double;"
-            gps-entity-place="latitude: 37.526590; longitude: 126.887970;" look-at="[gps-camera]" scale="1 1 1"
+            gps-entity-place="latitude: 37.526676; longitude: 126.887700;" look-at="[gps-camera]" scale="1 1 1"
             position="0 0 0"></a-entity>
 
         <!-- 평면 이미지 표현 -->
@@ -173,6 +176,21 @@
         document.getElementById("toggleFormBtn").addEventListener("click", () => {
             const form = document.getElementById("targetForm");
             form.style.display = (form.style.display === "none") ? "block" : "none";
+        });
+
+                // 하늘향할떄 보이게
+        AFRAME.registerComponent('sky-detector', {
+            tick: function () {
+                const cameraRot = this.el.getAttribute('rotation');
+                const pitch = cameraRot.x; // 상하 각도
+
+                const message = document.querySelector('#skyMessage');
+                if (pitch < -45) {
+                    message.setAttribute('visible', true);
+                } else {
+                    message.setAttribute('visible', false);
+                }
+            }
         });
     </script>
 
