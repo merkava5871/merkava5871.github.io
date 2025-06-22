@@ -4,7 +4,7 @@
     "material": "src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;",
     "latitude": 37.526676,
     "longitude": 126.887700,
-    "position": "0 3 -3"
+    "position": "0 3 -3",
     "rotation": "0 0 0",
     "scale": "1 1 1",
     "baseScale": "3 3 3",
@@ -15,7 +15,7 @@
     "material": "src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;",
     "latitude": 37.526676,
     "longitude": 126.887700,
-    "position": "0 6 0"
+    "position": "0 6 0",
     "rotation": "0 0 0",
     "scale": "1 1 1",
     "baseScale": "3 3 3",
