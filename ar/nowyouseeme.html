@@ -292,20 +292,20 @@
             return match ? match[1].replace(/['"]/g, '') : '';
         }
 
-        // 하늘향할떄 보이게
-        AFRAME.registerComponent('sky-detector', {
-            tick: function () {
-                const cameraRot = this.el.getAttribute('rotation');
-                const pitch = cameraRot.x; // 상하 각도
+        // // 하늘향할떄 보이게
+        // AFRAME.registerComponent('sky-detector', {
+        //     tick: function () {
+        //         const cameraRot = this.el.getAttribute('rotation');
+        //         const pitch = cameraRot.x; // 상하 각도
 
-                const message = document.querySelector('#skyMessage');
-                if (pitch < -45) {
-                    message.setAttribute('visible', true);
-                } else {
-                    message.setAttribute('visible', false);
-                }
-            }
-        });
+        //         const message = document.querySelector('#skyMessage');
+        //         if (pitch < -45) {
+        //             message.setAttribute('visible', true);
+        //         } else {
+        //             message.setAttribute('visible', false);
+        //         }
+        //     }
+        // });
 
     </script>
 
