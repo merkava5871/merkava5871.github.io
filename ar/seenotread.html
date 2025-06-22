@@ -107,7 +107,7 @@
 
     <script>
         // data가져오기
-        fetch('https://d2i253d5k7v4zj.cloudfront.net/images.json')
+        fetch('https://merkava5871.github.io/ar/images.json')
             .then(res => res.json())
             .then(data => {
                 const scene = document.querySelector('a-scene');
@@ -127,11 +127,11 @@
                     } 
 
                     // 거리 기반 스케일 적용
-                    const base = (item.baseScale || '1 1 1').split(' ').map(Number);
-                    entity.setAttribute('distance-scaler', {
-                        baseScale: { x: base[0], y: base[1], z: base[2] },
-                        maxDistance: item.maxDistance || 100
-                    });
+                    // const base = (item.baseScale || '1 1 1').split(' ').map(Number);
+                    // entity.setAttribute('distance-scaler', {
+                    //     baseScale: { x: base[0], y: base[1], z: base[2] },
+                    //     maxDistance: item.maxDistance || 100
+                    // });
 
                     scene.appendChild(entity);
                 });
@@ -182,33 +182,33 @@
         });
 
         //거리에 맞춰 이미지 크기 조정
-        AFRAME.registerComponent('distance-scaler', {
-            schema: {
-                baseScale: { type: 'vec3', default: { x: 1, y: 1, z: 1 } },
-                maxDistance: { type: 'number', default: 100 }
-            },
-            tick: function () {
-                const camera = this.el.sceneEl.camera;
-                if (!camera) return;
+        // AFRAME.registerComponent('distance-scaler', {
+        //     schema: {
+        //         baseScale: { type: 'vec3', default: { x: 1, y: 1, z: 1 } },
+        //         maxDistance: { type: 'number', default: 100 }
+        //     },
+        //     tick: function () {
+        //         const camera = this.el.sceneEl.camera;
+        //         if (!camera) return;
 
-                const entityPos = new THREE.Vector3();
-                const cameraPos = new THREE.Vector3();
+        //         const entityPos = new THREE.Vector3();
+        //         const cameraPos = new THREE.Vector3();
 
-                this.el.object3D.getWorldPosition(entityPos);
-                camera.getWorldPosition(cameraPos);
+        //         this.el.object3D.getWorldPosition(entityPos);
+        //         camera.getWorldPosition(cameraPos);
 
-                const distance = entityPos.distanceTo(cameraPos);
-                const clamped = Math.min(distance, this.data.maxDistance);
-                const factor = Math.max(0.3, clamped / this.data.maxDistance); // 최소 크기 제한
+        //         const distance = entityPos.distanceTo(cameraPos);
+        //         const clamped = Math.min(distance, this.data.maxDistance);
+        //         const factor = Math.max(0.3, clamped / this.data.maxDistance); // 최소 크기 제한
 
-                const s = this.data.baseScale;
-                this.el.setAttribute('scale', {
-                    x: s.x * factor,
-                    y: s.y * factor,
-                    z: s.z * factor
-                });
-            }
-        });
+        //         const s = this.data.baseScale;
+        //         this.el.setAttribute('scale', {
+        //             x: s.x * factor,
+        //             y: s.y * factor,
+        //             z: s.z * factor
+        //         });
+        //     }
+        // });
 
 
         // 타겟 위치 입력,저장
