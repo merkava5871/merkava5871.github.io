@@ -4,7 +4,19 @@
     "material": "src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;",
     "latitude": 37.526676,
     "longitude": 126.887700,
-    "position": "0 3 -3",
+    "position": "0 3 -3"
+    "rotation": "0 0 0",,
+    "scale": "1 1 1",
+    "baseScale": "3 3 3",
+    "maxDistance": 100
+  },
+  {
+    "geometry": "primitive: plane; width: 2; height: 2",
+    "material": "src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;",
+    "latitude": 37.526676,
+    "longitude": 126.887700,
+    "position": "0 6 0"
+    "rotation": "0 0 0",,
     "scale": "1 1 1",
     "baseScale": "3 3 3",
     "maxDistance": 100
@@ -20,7 +32,7 @@
     "maxDistance": 100
   },
   {
-    "geometry": "primitive: box; width: 2; height: 2; depth: 2",
+    "geometry": "primitive: plane; width: 2; height: 2",
     "material": "shader: gif; src: url(https://d2i253d5k7v4zj.cloudfront.net/arrow_direction_spin_right_md_nwm_v2.gif)",
     "latitude": 37.526590,
     "longitude": 126.887970,
