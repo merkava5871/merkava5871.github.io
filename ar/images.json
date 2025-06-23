@@ -26,9 +26,9 @@
     "material": "src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;",
     "latitude": 37.507173,
     "longitude": 127.058588,
-    "position": "0 1 -3",
-    "scale": "1 1 1",
-    "baseScale": "2 2 2",
+    "position": "0 0 0",
+    "scale": "5 5 5",
+    "baseScale": "5 5 5",
     "maxDistance": 100
   },
   {
