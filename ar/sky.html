@@ -25,16 +25,24 @@
         }
         
         /* 목적지 GPS 입력 창 */
-        #targetForm {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            z-index: 999;
-        }
+#targetForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+#targetForm input {
+  width: 160px; /* 입력창 폭 제한 */
+}
+
+#applyTargetBtn {
+  align-self: flex-end;
+  margin-top: 8px;
+  padding: 6px 12px;
+  width: auto; /* 버튼이 텍스트에 맞게 */
+}
+
 
         /* 근처 왔을때 메세지 창 */
         #arrivalMessage {
@@ -58,16 +66,16 @@
     <div id="gpsDisplay">📍 위치 확인 중...</div>
 
     <!-- 토글 버튼, 타겟 입력 창 펼치기기 -->
-    <button id="toggleFormBtn" style="position: absolute; top: 100px; right: 10px; z-index: 999;">
+    <button id="toggleFormBtn" style="position: absolute; top: 160px; right: 10px; z-index: 999;">
         🎯 타겟 위치 설정
     </button>
 
     <!-- 타겟 입력 폼 -->
     <div id="targetForm"
-        style="display: none; position: absolute; top: 140px; right: 10px; background: #fff; padding: 10px; border-radius: 6px; z-index: 999;">
+        style="display: none; position: absolute; top: 200px; right: 10px; background: #fff; padding: 10px; border-radius: 6px; z-index: 999;">
         위도: <input type="number" id="targetLat" step="0.000001"><br />
-        경도: <input type="number" id="targetLon" step="0.000001"><br />
-        <button onclick="updateTarget()">적용</button>
+        경도: <input type="number" id="targetLon" step="0.000001">
+        <button id="applyTargetBtn">적용</button>
     </div>
 
     <!-- 타겟 근처 메세지 내용 -->
