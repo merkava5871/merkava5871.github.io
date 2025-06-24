@@ -120,7 +120,7 @@
             }, 4000); // 4초 후 자동 숨김
         }
 
-        // 현재위치에서 타겟까지의 거리 계산산
+        // 현재위치에서 타겟까지의 거리 계산
         function haversineDistance(lat1, lon1, lat2, lon2) {
             const R = 6371000;
             const toRad = deg => deg * Math.PI / 180;
@@ -133,20 +133,25 @@
             return R * c;
         }
 
-        // 타겟 위치 입력,저장장
+        // 타겟 위치 입력,저장
         function updateTarget() {
             targetLat = parseFloat(document.getElementById("targetLat").value);
             targetLon = parseFloat(document.getElementById("targetLon").value);
             alert(`✔️ 타겟 위치 설정됨: ${targetLat}, ${targetLon}`);
         }
 
-        // 현재위치 표시시
+        // 현재위치 표시
         const gpsDisplay = document.getElementById("gpsDisplay");
         navigator.geolocation.watchPosition(
             (pos) => {
                 const lat = pos.coords.latitude.toFixed(6);
                 const lon = pos.coords.longitude.toFixed(6);
                 const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "알 수 없음";
+                //기울기 표시
+                const camera = document.querySelector('[gps-camera]');
+                const rot = camera.getAttribute('rotation');
+                const pitch = rot ? rot.x.toFixed(1) + "°" : "측정 중";
+
 
                 let distanceStr = "타겟 미설정";
                 if (targetLat && targetLon) {
@@ -163,7 +168,8 @@
                 }
 
                 gpsDisplay.textContent =
-                    `📍 위도: ${lat}\n📍 경도: ${lon}\n📏 거리: ${distanceStr}\n🗻 고도: ${alt}`;
+                    `↔️ 위도: ${lat}\n↕️ 경도: ${lon}\n🗻 고도: ${alt}\n📐 기울기: ${pitch}\n📏 거리: ${distanceStr}`;
+;
             },
             (err) => {
                 gpsDisplay.textContent = "❗ GPS 정보를 가져올 수 없습니다.";
