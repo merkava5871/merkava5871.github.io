@@ -83,10 +83,19 @@
         <a-camera gps-camera rotation-reader sky-detector></a-camera>
 
         <!-- 이미지 표시 객체 -->
-<a-entity id="skyMessage" position="0 4 -3"
+<!-- <a-entity id="skyMessage" position="0 4 -3"
             text="value: 🚀🏃‍♂️‍➡️ Make it RUNNING, not just WORKING!🚶‍♂️‍➡️🚗; align: center; color: yellow; width: 6; font: https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"
   visible="true">
-</a-entity>
+</a-entity> -->
+        <a-image
+  id="skyMessage"
+  position="0 4 -3"
+  src="https://d2i253d5k7v4zj.cloudfront.net/batman.png"
+  width="3"
+  height="3"
+  visible="false">
+</a-image>
+
         
          <!-- 평면 이미지 박스 입체로 표현 -->
           <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
@@ -213,7 +222,7 @@
       const pitch = rot.x; // 상하 각도
       const message = document.querySelector('#skyMessage');
 
-      if (pitch < -80) {
+      if (pitch < -70) {
         message.setAttribute('visible', true);
       } else {
         message.setAttribute('visible', false);
