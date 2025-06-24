@@ -25,16 +25,22 @@
         }
         
         /* 목적지 GPS 입력 창 */
-        #targetForm {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            z-index: 999;
-        }
+#targetForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+#targetForm input {
+  width: 160px; /* 입력창 폭 제한 */
+}
+#updateTarget {
+  align-self: flex-end;
+  margin-top: 8px;
+  padding: 6px 12px;
+  width: auto; /* 버튼이 텍스트에 맞게 */
+}
+
 
         /* 근처 왔을때 메세지 창 */
         #arrivalMessage {
@@ -58,16 +64,16 @@
     <div id="gpsDisplay">📍 위치 확인 중...</div>
 
     <!-- 토글 버튼, 타겟 입력 창 펼치기기 -->
-    <button id="toggleFormBtn" style="position: absolute; top: 100px; right: 10px; z-index: 999;">
+    <button id="toggleFormBtn" style="position: absolute; top: 130px; right: 10px; z-index: 999;">
         🎯 타겟 위치 설정
     </button>
 
     <!-- 타겟 입력 폼 -->
     <div id="targetForm"
-        style="display: none; position: absolute; top: 140px; right: 10px; background: #fff; padding: 10px; border-radius: 6px; z-index: 999;">
+        style="display: none; position: absolute; top: 160px; right: 10px; background: #fff; padding: 10px; border-radius: 6px; z-index: 999;">
         위도: <input type="number" id="targetLat" step="0.000001"><br />
-        경도: <input type="number" id="targetLon" step="0.000001"><br />
-        <button onclick="updateTarget()">적용</button>
+        경도: <input type="number" id="targetLon" step="0.000001">
+        <button id="updateTarget" onclick="updateTarget()">적용</button>
     </div>
 
     <!-- 타겟 근처 메세지 내용 -->
@@ -77,12 +83,26 @@
         <a-camera gps-camera rotation-reader sky-detector></a-camera>
 
         <!-- 이미지 표시 객체 -->
-<a-entity id="skyMessage" position="0 10 0"
-            text="value: ☁️ 하늘을 향해 비추셨군요!; align: center; color: yellow; width: 6" visible="true"></a-entity>
+<!-- <a-entity id="skyMessage" position="0 4 -3"
+            text="value: 🚀🏃‍♂️‍➡️ Make it RUNNING, not just WORKING!🚶‍♂️‍➡️🚗; align: center; color: yellow; width: 6; font: https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"
+  visible="true">
+</a-entity> -->
+        
+<a-image
+  id="skyMessage"
+  position="0 3 -3"
+  rotation="-90 0 0"
+  src="https://d2i253d5k7v4zj.cloudfront.net/batman.png"
+  width="6"
+  height="3"
+  visible="false">
+</a-image>
+
+
         
          <!-- 평면 이미지 박스 입체로 표현 -->
           <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
-        <a-entity geometry="primitive: box; height: 2; width: 2; depth: 0.3"
+        <a-entity geometry="primitive: plane; height: 2; width: 2"
             material="src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;"
             gps-entity-place="latitude: 37.526676; longitude: 126.887700;" look-at="[gps-camera]" scale="5 5 5"
             position="0 0 0"></a-entity>
@@ -120,7 +140,7 @@
             }, 4000); // 4초 후 자동 숨김
         }
 
-        // 현재위치에서 타겟까지의 거리 계산산
+        // 현재위치에서 타겟까지의 거리 계산
         function haversineDistance(lat1, lon1, lat2, lon2) {
             const R = 6371000;
             const toRad = deg => deg * Math.PI / 180;
@@ -133,20 +153,25 @@
             return R * c;
         }
 
-        // 타겟 위치 입력,저장장
+        // 타겟 위치 입력,저장
         function updateTarget() {
             targetLat = parseFloat(document.getElementById("targetLat").value);
             targetLon = parseFloat(document.getElementById("targetLon").value);
             alert(`✔️ 타겟 위치 설정됨: ${targetLat}, ${targetLon}`);
         }
 
-        // 현재위치 표시시
+        // 현재위치 표시
         const gpsDisplay = document.getElementById("gpsDisplay");
         navigator.geolocation.watchPosition(
             (pos) => {
                 const lat = pos.coords.latitude.toFixed(6);
                 const lon = pos.coords.longitude.toFixed(6);
                 const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "알 수 없음";
+                //기울기 표시
+                const camera = document.querySelector('[gps-camera]');
+                const rot = camera.getAttribute('rotation');
+                const pitch = rot ? rot.x.toFixed(1) + "°" : "측정 중";
+
 
                 let distanceStr = "타겟 미설정";
                 if (targetLat && targetLon) {
@@ -163,7 +188,8 @@
                 }
 
                 gpsDisplay.textContent =
-                    `📍 위도: ${lat}\n📍 경도: ${lon}\n📏 거리: ${distanceStr}\n🗻 고도: ${alt}`;
+                    `↔️ 위도: ${lat}\n↕️ 경도: ${lon}\n🗻 고도: ${alt}\n📐 기울기: ${pitch}\n📏 거리: ${distanceStr}`;
+;
             },
             (err) => {
                 gpsDisplay.textContent = "❗ GPS 정보를 가져올 수 없습니다.";
@@ -178,19 +204,34 @@
         });
 
                 // 하늘향할떄 보이게
-        AFRAME.registerComponent('sky-detector', {
-            tick: function () {
-                const cameraRot = this.el.getAttribute('rotation');
-                const pitch = cameraRot.x; // 상하 각도
+  // 1. 카메라 회전값을 얻기 위한 rotation-reader
+  AFRAME.registerComponent('rotation-reader', {
+    tick: function () {
+      const rot = this.el.object3D.rotation;
+      this.el.setAttribute('rotation', {
+        x: THREE.Math.radToDeg(rot.x),
+        y: THREE.Math.radToDeg(rot.y),
+        z: THREE.Math.radToDeg(rot.z)
+      });
+    }
+  });
 
-                const message = document.querySelector('#skyMessage');
-                if (pitch < -45) {
-                    message.setAttribute('visible', true);
-                } else {
-                    message.setAttribute('visible', false);
-                }
-            }
-        });
+  // 2. 하늘 감지 후 메시지 표시
+  AFRAME.registerComponent('sky-detector', {
+    tick: function () {
+      const rot = this.el.getAttribute('rotation');
+      if (!rot) return;
+
+      const pitch = rot.x; // 상하 각도
+      const message = document.querySelector('#skyMessage');
+
+      if (pitch < -60) {
+        message.setAttribute('visible', true);
+      } else {
+        message.setAttribute('visible', false);
+      }
+    }
+  })
     </script>
 
 
