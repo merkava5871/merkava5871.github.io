@@ -11,11 +11,11 @@
     "maxDistance": 100
   },
   {
-    "geometry": "primitive: plane; width: 2; height: 2",
+    "geometry": "primitive: plane; width: 1; height: 1.5",
     "material": "src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;",
     "latitude": 37.526676,
     "longitude": 126.887700,
-    "position": "0 6 0",
+    "position": "0 0 0",
     "rotation": "0 0 0",
     "scale": "5 5 5",
     "baseScale": "5 5 5",
