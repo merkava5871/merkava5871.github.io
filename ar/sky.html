@@ -23,23 +23,27 @@
             z-index: 999;
             white-space: pre-line;
         }
-        
+
         /* 목적지 GPS 입력 창 */
-#targetForm {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-#targetForm input {
-  width: 160px; /* 입력창 폭 제한 */
-}
-#updateTarget {
-  align-self: flex-end;
-  margin-top: 8px;
-  padding: 6px 12px;
-  width: auto; /* 버튼이 텍스트에 맞게 */
-}
+        #targetForm {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        #targetForm input {
+            width: 160px;
+            /* 입력창 폭 제한 */
+        }
+
+        #updateTarget {
+            align-self: flex-end;
+            margin-top: 8px;
+            padding: 6px 12px;
+            width: auto;
+            /* 버튼이 텍스트에 맞게 */
+        }
 
 
         /* 근처 왔을때 메세지 창 */
@@ -79,29 +83,24 @@
     <!-- 타겟 근처 메세지 내용 -->
     <div id="arrivalMessage">🎉 타겟 위치에 도착했습니다!</div>
 
-    <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
+    <a-scene vr-mode-ui="enabled: false" embedded
+        arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
         <a-camera gps-camera rotation-reader sky-detector></a-camera>
 
         <!-- 이미지 표시 객체 -->
-<!-- <a-entity id="skyMessage" position="0 4 -3"
+        <!-- <a-entity id="skyMessage" position="0 4 -3"
             text="value: 🚀🏃‍♂️‍➡️ Make it RUNNING, not just WORKING!🚶‍♂️‍➡️🚗; align: center; color: yellow; width: 6; font: https://cdn.aframe.io/fonts/DejaVu-sdf.fnt"
   visible="true">
 </a-entity> -->
-        
-<a-image
-  id="skyMessage"
-  position="0 10 -5"
-  rotation="90 0 0"
-  src="https://d2i253d5k7v4zj.cloudfront.net/batman.png"
-  width="6"
-  height="3"
-  visible="true">
-</a-image>
+
+        <a-image id="skyMessage" position="0 10 -5" rotation="90 0 0"
+            src="https://d2i253d5k7v4zj.cloudfront.net/batman.png" width="6" height="3" visible="true">
+        </a-image>
 
 
-        
-         <!-- 평면 이미지 박스 입체로 표현 -->
-          <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
+
+        <!-- 평면 이미지 박스 입체로 표현 -->
+        <!-- position은 GPS 기준 상대 위치로 작용해 — 예: 0 1 -3은 해당 좌표에서 1m 위, 3m 앞 -->
         <a-entity geometry="primitive: plane; height: 2; width: 2"
             material="src: https://d2i253d5k7v4zj.cloudfront.net/Jiahn.png; side: double;"
             gps-entity-place="latitude: 37.526676; longitude: 126.887700;" look-at="[gps-camera]" scale="5 5 5"
@@ -189,7 +188,7 @@
 
                 gpsDisplay.textContent =
                     `↔️ 위도: ${lat}\n↕️ 경도: ${lon}\n🗻 고도: ${alt}\n📐 기울기: ${pitch}\n📏 거리: ${distanceStr}`;
-;
+                ;
             },
             (err) => {
                 gpsDisplay.textContent = "❗ GPS 정보를 가져올 수 없습니다.";
@@ -203,35 +202,35 @@
             form.style.display = (form.style.display === "none") ? "block" : "none";
         });
 
-                // 하늘향할떄 보이게
-  // 1. 카메라 회전값을 얻기 위한 rotation-reader
-  AFRAME.registerComponent('rotation-reader', {
-    tick: function () {
-      const rot = this.el.object3D.rotation;
-      this.el.setAttribute('rotation', {
-        x: THREE.Math.radToDeg(rot.x),
-        y: THREE.Math.radToDeg(rot.y),
-        z: THREE.Math.radToDeg(rot.z)
-      });
-    }
-  });
+        // 하늘향할떄 보이게
+        // 1. 카메라 회전값을 얻기 위한 rotation-reader
+        AFRAME.registerComponent('rotation-reader', {
+            tick: function () {
+                const rot = this.el.object3D.rotation;
+                this.el.setAttribute('rotation', {
+                    x: THREE.Math.radToDeg(rot.x),
+                    y: THREE.Math.radToDeg(rot.y),
+                    z: THREE.Math.radToDeg(rot.z)
+                });
+            }
+        });
 
-  // 2. 하늘 감지 후 메시지 표시
-  AFRAME.registerComponent('sky-detector', {
-    tick: function () {
-      const rot = this.el.getAttribute('rotation');
-      if (!rot) return;
+        // 2. 하늘 감지 후 메시지 표시
+        AFRAME.registerComponent('sky-detector', {
+            tick: function () {
+                const rot = this.el.getAttribute('rotation');
+                if (!rot) return;
 
-      const pitch = rot.x; // 상하 각도
-      const message = document.querySelector('#skyMessage');
+                const pitch = rot.x; // 상하 각도
+                const message = document.querySelector('#skyMessage');
 
-      if (pitch < -30) {
-        message.setAttribute('visible', true);
-      } else {
-        message.setAttribute('visible', false);
-      }
-    }
-  })
+                if (pitch < -30) {
+                    message.setAttribute('visible', true);
+                } else {
+                    message.setAttribute('visible', false);
+                }
+            }
+        })
     </script>
 
 
