@@ -104,11 +104,14 @@
         //fetch('https://merkava5871.github.io/ar/images.json')
         fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects')
             .then(res => res.json())
-            .then(data => {
+            //.then(data => {
+            .then(api => {
+                const data = JSON.parse(api.body);
                 console.log("✅ 받아온 데이터:", data); // 여기에 구조 로그 찍어보기
+
                 const scene = document.querySelector('a-scene');
-                //data.forEach((item, i) => {
-                (data.Items || []).forEach((item, i) => {
+                data.forEach((item, i) => {
+                //(data.Items || []).forEach((item, i) => {
                     const entity = document.createElement('a-entity');
 
                     entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
@@ -148,6 +151,7 @@
             .catch(err => {
                 console.error('❗ JSON 로딩 실패:', err);
             });
+            
 
         // 타겟 GPS 변수
         let targetLat = null;
