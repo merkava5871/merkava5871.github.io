@@ -106,7 +106,8 @@
             .then(res => res.json())
             .then(data => {
                 const scene = document.querySelector('a-scene');
-                data.forEach((item, i) => {
+                //data.forEach((item, i) => {
+                (data.Items || []).forEach((item, i) => {
                     const entity = document.createElement('a-entity');
 
                     entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
