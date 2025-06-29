@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8" />
   <title>Upload AR Objects</title>
@@ -10,15 +11,19 @@
       max-width: 600px;
       margin: auto;
     }
-    input, textarea {
+
+    input,
+    textarea {
       width: 100%;
       margin-bottom: 10px;
     }
+
     label {
       font-weight: bold;
       margin-top: 10px;
       display: block;
     }
+
     .example {
       font-size: 13px;
       color: #666;
@@ -27,6 +32,7 @@
     }
   </style>
 </head>
+
 <body>
   <h2>📍 Current Location</h2>
   <div id="currentLocation">GPS Loading...</div>
@@ -45,11 +51,13 @@
     <label>Geometry</label>
     <input type="text" id="geometry" value="primitive: box; width: 2; height: 2; depth: 2">
     <small class="example">ex1: <code>primitive: box; width: 2; height: 2; depth: 2</code><br>
-                           ex2: <code>primitive: plane; width: 2; height: 2</code></small>
+      ex2: <code>primitive: plane; width: 2; height: 2</code></small>
 
     <label>Material</label>
-    <input type="text" id="material" value="src: https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.png; side: double;">
-    <small class="example">GIF: <code>shader: gif; src: url(https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.gif)</code></small>
+    <input type="text" id="material"
+      value="src: https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.png; side: double;">
+    <small class="example">GIF:
+      <code>shader: gif; src: url(https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.gif)</code></small>
 
     <label>Position</label>
     <input type="text" id="position" value="0 0 0">
@@ -60,11 +68,11 @@
     <label>Scale</label>
     <input type="text" id="scale" value="1 1 1">
 
-    <label>baseScale</label>
+    <!-- <label>baseScale</label>
     <input type="text" id="baseScale" value="3 3 3">
 
     <label>maxDistance</label>
-    <input type="number" id="maxDistance" value="100">
+    <input type="number" id="maxDistance" value="100"> -->
 
     <label>Upload Image</label>
     <input type="file" id="imageFile" accept="image/*" required>
@@ -82,6 +90,29 @@
       document.getElementById("lon").value = lon;
     }, err => {
       document.getElementById("currentLocation").textContent = "GPS Failed.";
+    });
+
+    document.getElementById("imageFile").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("https://rxcny7bxve.execute-api.ap-northeast-2.amazonaws.com/prod/upload-image", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        const cdnUrl = result.cdnUrl;
+        const materialStr = `src: ${cdnUrl}; side: double;`;
+        document.getElementById("material").value = materialStr;
+        console.log("✅ 이미지 업로드 완료:", cdnUrl);
+      } else {
+        alert("이미지 업로드 실패");
+      }
     });
 
     document.getElementById("uploadForm").addEventListener("submit", async (e) => {
@@ -109,25 +140,33 @@
         createdAt: new Date().toISOString()
       };
 
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("metadata", JSON.stringify(metadata));
+      // const formData = new FormData();
+      // formData.append("file", file);
+      // // formData.append("metadata", JSON.stringify(metadata));
+
+      // const res = await fetch("https://9o2w05wwy2.execute-api.ap-northeast-2.amazonaws.com/prod/upload-object", {
+      //   method: "POST",
+      //   body: formData
+      // });
+
+      // const result = await res.json();
+      // if (res.ok) {
+      //   const cdnUrl = result.cdnUrl;
+      //   const updatedMaterial = `src: ${cdnUrl}; side: double;`;
+      //   document.getElementById("material").value = updatedMaterial;
+      //   alert("✅ Success!");
+      // } else {
+      //   alert("❌ Failed!");
+      // }
 
       const res = await fetch("https://9o2w05wwy2.execute-api.ap-northeast-2.amazonaws.com/prod/upload-object", {
         method: "POST",
-        body: formData
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(metadata)
       });
 
-      const result = await res.json();
-      if (res.ok) {
-        const cdnUrl = result.cdnUrl;
-        const updatedMaterial = `src: ${cdnUrl}; side: double;`;
-        document.getElementById("material").value = updatedMaterial;
-        alert("✅ Success!");
-      } else {
-        alert("❌ Failed!");
-      }
     });
   </script>
 </body>
+
 </html>
