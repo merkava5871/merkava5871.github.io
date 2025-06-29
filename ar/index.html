@@ -65,7 +65,7 @@
 </head>
 
 <body style="margin: 0; overflow: hidden;">
-    <div id="gpsDisplay">📍 위치 확인 중...</div>
+    <div id="gpsDisplay">📍 GPS Loading...</div>
 
     <!-- 토글 버튼, 타겟 입력 창 펼치기기 -->
     <button id="toggleFormBtn" style="position: absolute; top: 130px; right: 10px; z-index: 999;">
@@ -184,7 +184,7 @@
                 }
 
                 gpsDisplay.textContent =
-                    `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n🗻 Alt: ${alt}\n📐 기울기: ${pitch}\n📏 Dis: ${distanceStr}`;
+                    `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n🗻 Alt: ${alt}\n📐 Angle: ${pitch}\n📏 Dis: ${distanceStr}`;
             },
             (err) => {
                 gpsDisplay.textContent = "❗ GPS not Found.";
