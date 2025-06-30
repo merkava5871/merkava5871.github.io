@@ -75,7 +75,10 @@
     <input type="number" id="maxDistance" value="100"> -->
 
     <label>Upload Image</label>
-    <input type="file" id="imageFile" accept="image/*" required>
+    <!-- <input type="file" id="imageFile" accept="image/*" required> -->
+    <!-- 🔄 변경: 이미지 업로드는 선택사항으로 전환 -->
+    <input type="file" id="imageFile" accept="image/*">
+
 
     <button type="submit">🚀 Submit</button>
   </form>
@@ -99,19 +102,24 @@
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("https://rxcny7bxve.execute-api.ap-northeast-2.amazonaws.com/prod/upload-image", {
-        method: "POST",
-        body: formData
-      });
+      try {
+        const res = await fetch("https://rxcny7bxve.execute-api.ap-northeast-2.amazonaws.com/prod/upload-image", {
+          method: "POST",
+          body: formData
+        });
 
-      const result = await res.json();
-      if (res.ok) {
-        const cdnUrl = result.cdnUrl;
-        const materialStr = `src: ${cdnUrl}; side: double;`;
-        document.getElementById("material").value = materialStr;
-        console.log("✅ 이미지 업로드 완료:", cdnUrl);
-      } else {
-        alert("이미지 업로드 실패");
+        const result = await res.json();
+        if (res.ok) {
+          const cdnUrl = result.cdnUrl;
+          const materialStr = `src: ${cdnUrl}; side: double;`;
+          document.getElementById("material").value = materialStr;
+          alert("✅ Image Upload Success!");
+          // console.log("✅ 이미지 업로드 완료:", cdnUrl);
+        } else {
+          alert("❌ Image Upload Failed: " + (result.error || "Unknown error"));
+        }
+      } catch (err) {
+        alert("❌ Upload Error: " + err.message);
       }
     });
 
@@ -124,7 +132,7 @@
       //if (isDuplicate) return alert("❗ 동일한 ID가 이미 존재합니다!");
 
       const file = document.getElementById("imageFile").files[0];
-      if (!file) return alert("❗ 이미지 파일을 선택해주세요");
+      // if (!file) return alert("❗ 이미지 파일을 선택해주세요");
 
       const metadata = {
         id: inputId,
@@ -159,12 +167,23 @@
       //   alert("❌ Failed!");
       // }
 
-      const res = await fetch("https://9o2w05wwy2.execute-api.ap-northeast-2.amazonaws.com/prod/upload-object", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(metadata)
-      });
+      try {
+        const res = await fetch("https://9o2w05wwy2.execute-api.ap-northeast-2.amazonaws.com/prod/upload-object", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(metadata)
+        });
 
+        const result = await res.json();
+        if (res.ok) {
+          alert("✅ Submit Success!");
+          document.getElementById("uploadForm").reset();
+        } else {
+          alert("❌ Submit Failed: " + (result.error || "Unknown error"));
+        }
+      } catch (err) {
+        alert("❌ Request Error: " + err.message);
+      }
     });
   </script>
 </body>
