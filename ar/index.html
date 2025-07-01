@@ -4,10 +4,10 @@
 
   if (!hasToken) {
     const loginUrl =
-      "https://ap-northeast-2cdd1nzonw.auth.ap-northeast-2.amazoncognito.com/login?client_id=208ftqmj27rrj4s943jm3ofdcd&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fmerkava5871.github.io%2Far%2Fview.html"
+      "https://ap-northeast-2cdd1nzonw.auth.ap-northeast-2.amazoncognito.com"
       + "?response_type=token"
-      + "&client_id=YOUR_CLIENT_ID"
-      + "&redirect_uri=" + encodeURIComponent(window.location.href);
+      + "&client_id=208ftqmj27rrj4s943jm3ofdcd"
+      + "&redirect_uri=" + encodeURIComponent("https://merkava5871.github.io/ar/view.html");
 
     window.location.href = loginUrl;
   }
