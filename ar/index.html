@@ -61,6 +61,26 @@
             display: none;
             z-index: 999;
         }
+
+        /* 업로드 버튼 */
+        #uploadBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        #uploadBtn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -72,7 +92,7 @@
         🎯 Input Target ▼
     </button>
 
-    <button onclick="location.href='upload.html'">Upload</button>
+    <button id="uploadBtn">📤 Upload</button>
 
 
     <!-- 타겟 입력 폼 -->
@@ -85,19 +105,20 @@
 
     <!-- 타겟 근처 메세지 내용 -->
     <div id="arrivalMessage">🎉 You are near the target!</div>
-    
+
     <!-- 흔들림 보정할때 gpsMinAccuracy를 50으로 하는게 가이드인데 잘 안되는듯 -->
-    <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
+    <a-scene vr-mode-ui="enabled: false" embedded
+        arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
         <a-camera gps-camera rotation-reader sky-detector cursor="rayOrigin: mouse"></a-camera>
 
 
         <!-- 이미지 표시 객체 -->
-         <!-- 하늘 향할때 메세지 -->
+        <!-- 하늘 향할때 메세지 -->
         <!-- <a-entity id="skyMessage" position="0 10 0"
             text="value: ☁️ 하늘을 향해 비추셨군요!; align: center; color: yellow; width: 6" visible="false"></a-entity> -->
-            <a-image id="skyMessage" position="0 10 -5" rotation="90 0 0"
-                src="https://d2i253d5k7v4zj.cloudfront.net/batman.png" width="6" height="3" visible="true">
-            </a-image>
+        <a-image id="skyMessage" position="0 10 -5" rotation="90 0 0"
+            src="https://d2i253d5k7v4zj.cloudfront.net/batman.png" width="6" height="3" visible="true">
+        </a-image>
 
     </a-scene>
 
@@ -113,7 +134,7 @@
 
                 const scene = document.querySelector('a-scene');
                 data.forEach((item, i) => {
-                //(data.Items || []).forEach((item, i) => {
+                    //(data.Items || []).forEach((item, i) => {
                     const entity = document.createElement('a-entity');
 
                     entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
@@ -153,7 +174,7 @@
             .catch(err => {
                 console.error('❗ JSON 로딩 실패:', err);
             });
-            
+
 
         // 타겟 GPS 변수
         let targetLat = null;
@@ -166,7 +187,7 @@
                 const lat = pos.coords.latitude.toFixed(6);
                 const lon = pos.coords.longitude.toFixed(6);
                 const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "none";
-                 //기울기 표시
+                //기울기 표시
                 const camera = document.querySelector('[gps-camera]');
                 const rot = camera.getAttribute('rotation');
                 const pitch = rot ? rot.x.toFixed(1) + "°" : "measuring";
@@ -325,6 +346,11 @@
                 }
             }
         });
+        document.getElementById("uploadBtn").addEventListener("click", () => {
+            // 현재 토큰 등 쿼리스트링 붙여서 전달할 수도 있음
+            location.href = "upload.html";
+        });
+
 
     </script>
 
