@@ -1,10 +1,15 @@
 <script>
-const domain = "https://ap-northeast-2cdd1nzonw.auth.ap-northeast-2.amazoncognito.com";
-const clientId = "208ftqmj27rrj4s943jm3ofdcd";
-const redirectUri = "https://merkava5871.github.io/ar/view.html";
+  const domain = "https://ap-northeast-2cdd1nzonw.auth.ap-northeast-2.amazoncognito.com";
+  const clientId = "208ftqmj27rrj4s943jm3ofdcd";
+  const redirectUri = "https://merkava5871.github.io/ar/view.html";
+  const scope = "email openid phone";
 
-const loginUrl = `${domain}/login?response_type=code&client_id=${clientId}&scope=email+openid+phone&redirect_uri=${encodeURIComponent(redirectUri)}`;
+  const loginUrl = `${domain}/login?response_type=token&client_id=${clientId}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
-location.href = loginUrl;
+  const hash = location.hash;
+  const hasToken = hash.includes("id_token") || hash.includes("access_token");
 
+  if (!hasToken) {
+    location.href = loginUrl;
+  }
 </script>
