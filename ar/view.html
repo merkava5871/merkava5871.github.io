@@ -125,7 +125,12 @@
     <script>
         // data가져오기
         //fetch('https://merkava5871.github.io/ar/images.json')
-        fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects')
+        fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects', {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${idToken}`
+            }
+        })
             .then(res => res.json())
             //.then(data => {
             .then(api => {
@@ -350,6 +355,21 @@
             // 현재 토큰 등 쿼리스트링 붙여서 전달할 수도 있음
             location.href = "https://merkava5871.github.io/ar/upload.html";
         });
+
+
+        function getIdToken() {
+            const hash = window.location.hash.substring(1); // #id_token=...
+            const params = new URLSearchParams(hash);
+            return params.get("id_token") || localStorage.getItem("id_token");
+        }
+
+        const idToken = getIdToken();
+        if (idToken) {
+            localStorage.setItem("id_token", idToken); // 캐시
+        } else {
+            alert("❗ 인증 토큰이 없습니다. 로그인 후 다시 접속해주세요.");
+            // 또는 location.href = '로그인 URL';
+        }
 
 
     </script>
