@@ -123,6 +123,12 @@
     </a-scene>
 
     <script>
+        const hash = window.location.hash.substring(1);
+        const token = new URLSearchParams(hash).get("id_token");
+        if (token) {
+            localStorage.setItem("id_token", token);
+        }
+
         // data가져오기
         //fetch('https://merkava5871.github.io/ar/images.json')
         fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects', {
@@ -353,6 +359,7 @@
         });
         document.getElementById("uploadBtn").addEventListener("click", () => {
             // 현재 토큰 등 쿼리스트링 붙여서 전달할 수도 있음
+            const token = window.location.hash;
             location.href = "https://merkava5871.github.io/ar/upload.html";
         });
 
