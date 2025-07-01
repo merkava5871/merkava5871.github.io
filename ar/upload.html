@@ -78,7 +78,7 @@
     <!-- <input type="file" id="imageFile" accept="image/*" required> -->
     <!-- 🔄 변경: 이미지 업로드는 선택사항으로 전환 -->
     <input type="file" id="imageFile" accept="image/*">
-    
+
     <button type="submit">🚀 Submit</button>
 
     <button onclick="location.href='https://merkava5871.github.io/ar/view.html'">🕶️ AR View</button>
@@ -106,6 +106,9 @@
       try {
         const res = await fetch("https://rxcny7bxve.execute-api.ap-northeast-2.amazonaws.com/prod/upload-image", {
           method: "POST",
+          headers: {
+            "Authorization": `Bearer ${idToken}`
+          },
           body: formData
         });
 
@@ -171,7 +174,10 @@
       try {
         const res = await fetch("https://9o2w05wwy2.execute-api.ap-northeast-2.amazonaws.com/prod/upload-object", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`
+          },
           body: JSON.stringify(metadata)
         });
 
@@ -186,6 +192,22 @@
         alert("❌ Request Error: " + err.message);
       }
     });
+
+    function getIdToken() {
+      const hash = window.location.hash.substring(1); // #access_token=...
+      const params = new URLSearchParams(hash);
+      return params.get("id_token") || localStorage.getItem("id_token");
+    }
+
+    // 저장해두면 이동할 때도 유효하게 유지 가능
+    const idToken = getIdToken();
+    if (idToken) {
+      localStorage.setItem("id_token", idToken);
+    } else {
+      alert("❌ 로그인 토큰이 없습니다. 다시 로그인해 주세요.");
+      // 리디렉션할 수도 있음
+    }
+
   </script>
 </body>
 
