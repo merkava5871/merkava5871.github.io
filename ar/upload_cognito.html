@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Upload AR Objects</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    .example {
+      font-size: 13px;
+      color: #666;
+      margin-top: -6px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>📍 Current Location</h2>
+  <div id="currentLocation">GPS Loading...</div>
+
+  <form id="uploadForm">
+    <label>ID</label>
+    <input type="text" id="id" value="shape-name-location-no" required />
+    <small class="example">ex: <code>box-jiahn-home-001</code></small>
+
+    <label>Latitude</label>
+    <input type="number" step="0.000001" id="lat" required>
+
+    <label>Longitude</label>
+    <input type="number" step="0.000001" id="lon" required>
+
+    <label>Geometry</label>
+    <input type="text" id="geometry" value="primitive: plane; width: 2; height: 2">
+    <small class="example">ex1: <code>primitive: box; width: 2; height: 2; depth: 2</code><br>
+      ex2: <code>primitive: plane; width: 2; height: 2</code></small>
+
+    <label>Material</label>
+    <input type="text" id="material"
+      value="src: https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.png; side: double;">
+    <small class="example">GIF:
+      <code>shader: gif; src: url(https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.gif)</code></small>
+
+    <label>Position</label>
+    <input type="text" id="position" value="0 0 0">
+
+    <label>Rotation</label>
+    <input type="text" id="rotation" value="0 0 0">
+
+    <label>Scale</label>
+    <input type="text" id="scale" value="1 1 1">
+
+    <!-- <label>baseScale</label>
+    <input type="text" id="baseScale" value="3 3 3">
+
+    <label>maxDistance</label>
+    <input type="number" id="maxDistance" value="100"> -->
+
+    <label>Upload Image</label>
+    <!-- <input type="file" id="imageFile" accept="image/*" required> -->
+    <!-- 🔄 변경: 이미지 업로드는 선택사항으로 전환 -->
+    <input type="file" id="imageFile" accept="image/*">
+
+    <button type="submit">🚀 Submit</button>
+
+    <button onclick="location.href='https://merkava5871.github.io/ar/view.html'">🕶️ AR View</button>
+  </form>
+
+  <script>
+    // 위치 자동 채우기
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lon = pos.coords.longitude.toFixed(6);
+      document.getElementById("currentLocation").textContent = `Lat: ${lat}, Lon: ${lon}`;
+      document.getElementById("lat").value = lat;
+      document.getElementById("lon").value = lon;
+    }, err => {
+      document.getElementById("currentLocation").textContent = "GPS Failed.";
+    });
+
+    document.getElementById("imageFile").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch("https://rxcny7bxve.execute-api.ap-northeast-2.amazonaws.com/prod/upload-image", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${idToken}`
+          },
+          body: formData
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          const cdnUrl = result.cdnUrl;
+          const materialStr = `src: ${cdnUrl}; side: double;`;
+          document.getElementById("material").value = materialStr;
+          alert("✅ Image Upload Success!");
+          // console.log("✅ 이미지 업로드 완료:", cdnUrl);
+        } else {
+          alert("❌ Image Upload Failed: " + (result.error || "Unknown error"));
+        }
+      } catch (err) {
+        alert("❌ Upload Error: " + err.message);
+      }
+    });
+
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // 유니크 ID 중복 검사 (예시: 이전에 입력한 값 리스트에 존재하면 에러)
+      const inputId = document.getElementById("id").value;
+      //const isDuplicate = false; // ⛔ 여기 부분은 실제로는 DB를 조회해야 함
+      //if (isDuplicate) return alert("❗ 동일한 ID가 이미 존재합니다!");
+
+      const file = document.getElementById("imageFile").files[0];
+      // if (!file) return alert("❗ 이미지 파일을 선택해주세요");
+
+      const metadata = {
+        id: inputId,
+        latitude: parseFloat(document.getElementById("lat").value),
+        longitude: parseFloat(document.getElementById("lon").value),
+        geometry: document.getElementById("geometry").value,
+        material: document.getElementById("material").value, // 나중에 업데이트됨
+        position: document.getElementById("position").value,
+        rotation: document.getElementById("rotation").value,
+        scale: document.getElementById("scale").value,
+        // baseScale: document.getElementById("baseScale").value,
+        // maxDistance: parseInt(document.getElementById("maxDistance").value),
+        createdAt: new Date().toISOString()
+      };
+
+      // const formData = new FormData();
+      // formData.append("file", file);
+      // // formData.append("metadata", JSON.stringify(metadata));
+
+      // const res = await fetch("https://9o2w05wwy2.execute-api.ap-northeast-2.amazonaws.com/prod/upload-object", {
+      //   method: "POST",
+      //   body: formData
+      // });
+
+      // const result = await res.json();
+      // if (res.ok) {
+      //   const cdnUrl = result.cdnUrl;
+      //   const updatedMaterial = `src: ${cdnUrl}; side: double;`;
+      //   document.getElementById("material").value = updatedMaterial;
+      //   alert("✅ Success!");
+      // } else {
+      //   alert("❌ Failed!");
+      // }
+
+      try {
+        const res = await fetch("https://9o2w05wwy2.execute-api.ap-northeast-2.amazonaws.com/prod/upload-object", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`
+          },
+          body: JSON.stringify(metadata)
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          alert("✅ Submit Success!");
+          document.getElementById("uploadForm").reset();
+        } else {
+          alert("❌ Submit Failed: " + (result.error || "Unknown error"));
+        }
+      } catch (err) {
+        alert("❌ Request Error: " + err.message);
+      }
+    });
+
+    function getIdToken() {
+      const hash = window.location.hash.substring(1); // #access_token=...
+      const params = new URLSearchParams(hash);
+      return params.get("id_token") || localStorage.getItem("id_token");
+    }
+
+    // 저장해두면 이동할 때도 유효하게 유지 가능
+    const idToken = getIdToken();
+    if (idToken) {
+      localStorage.setItem("id_token", idToken);
+    } else {
+      alert("❌ 로그인 토큰이 없습니다. 다시 로그인해 주세요.");
+      // 리디렉션할 수도 있음
+    }
+
+  </script>
+</body>
+
+</html>
