@@ -117,7 +117,7 @@
         <!-- <a-entity id="skyMessage" position="0 10 0"
             text="value: ☁️ 하늘을 향해 비추셨군요!; align: center; color: yellow; width: 6" visible="false"></a-entity> -->
         <a-image id="skyMessage" position="0 50 -3" rotation="90 0 0"
-            src="https://d2i253d5k7v4zj.cloudfront.net/batman.png" width="5" height="3" visible="false">
+            src="https://d2i253d5k7v4zj.cloudfront.net/batman.png" width="5" height="3" visible="true">
         </a-image>
 
     </a-scene>
@@ -317,35 +317,35 @@
             return match ? match[1].replace(/['"]/g, '') : '';
         }
 
-        // // 하늘향할떄 보이게
-        // 1. 카메라 회전값을 얻기 위한 rotation-reader
-        AFRAME.registerComponent('rotation-reader', {
-            tick: function () {
-                const rot = this.el.object3D.rotation;
-                this.el.setAttribute('rotation', {
-                    x: THREE.Math.radToDeg(rot.x),
-                    y: THREE.Math.radToDeg(rot.y),
-                    z: THREE.Math.radToDeg(rot.z)
-                });
-            }
-        });
+        // // // 하늘향할떄 보이게
+        // // 1. 카메라 회전값을 얻기 위한 rotation-reader
+        // AFRAME.registerComponent('rotation-reader', {
+        //     tick: function () {
+        //         const rot = this.el.object3D.rotation;
+        //         this.el.setAttribute('rotation', {
+        //             x: THREE.Math.radToDeg(rot.x),
+        //             y: THREE.Math.radToDeg(rot.y),
+        //             z: THREE.Math.radToDeg(rot.z)
+        //         });
+        //     }
+        // });
 
-        // 2. 하늘 감지 후 메시지 표시
-        AFRAME.registerComponent('sky-detector', {
-            tick: function () {
-                const rot = this.el.getAttribute('rotation');
-                if (!rot) return;
+        // // 2. 하늘 감지 후 메시지 표시
+        // AFRAME.registerComponent('sky-detector', {
+        //     tick: function () {
+        //         const rot = this.el.getAttribute('rotation');
+        //         if (!rot) return;
 
-                const pitch = rot.x; // 상하 각도
-                const message = document.querySelector('#skyMessage');
+        //         const pitch = rot.x; // 상하 각도
+        //         const message = document.querySelector('#skyMessage');
 
-                if (pitch < -30) {
-                    message.setAttribute('visible', true);
-                } else {
-                    message.setAttribute('visible', false);
-                }
-            }
-        });
+        //         if (pitch < -30) {
+        //             message.setAttribute('visible', true);
+        //         } else {
+        //             message.setAttribute('visible', false);
+        //         }
+        //     }
+        // });
         document.getElementById("uploadBtn").addEventListener("click", () => {
             // 현재 토큰 등 쿼리스트링 붙여서 전달할 수도 있음
             location.href = "https://merkava5871.github.io/ar/upload.html";
