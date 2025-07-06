@@ -3,7 +3,7 @@
     const clientId = "208ftqmj27rrj4s943jm3ofdcd";
     const redirectUri = "https://merkava5871.github.io/ar/view.html";
 
-    const loginUrl = `${domain}/login?response_type=code&client_id=${clientId}&scope=email+openid+phone&redirect_uri=${encodeURIComponent(redirectUri)}`;
+    const loginUrl = `${domain}/login?client_id=${clientId}&response_type=code&scope=email+openid+phone&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
     location.href = loginUrl;
 
