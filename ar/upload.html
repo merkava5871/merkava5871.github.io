@@ -210,6 +210,21 @@
         items.forEach(item => {
           const li = document.createElement("li");
           li.textContent = item.id;
+
+          li.style.cursor = "pointer";
+
+          li.addEventListener("click", () => {
+            document.getElementById("id").value = item.id || "";
+            document.getElementById("lat").value = item.latitude || "";
+            document.getElementById("lon").value = item.longitude || "";
+            document.getElementById("geometry").value = item.geometry || "";
+            document.getElementById("material").value = item.material || "";
+            document.getElementById("position").value = item.position || "";
+            document.getElementById("rotation").value = item.rotation || "";
+            document.getElementById("scale").value = item.scale || "";
+            alert(`✅ "${item.id}"의 정보가 폼에 입력되었습니다.`);
+          });
+
           listEl.appendChild(li);
         });
 
