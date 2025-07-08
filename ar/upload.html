@@ -84,6 +84,10 @@
     <button type="button" onclick="location.href='https://merkava5871.github.io/ar/view.html'">🕶️ AR View</button>
   </form>
 
+  <h3>🗂️ Existing Object IDs</h3>
+  <button type="button" id="loadObjectIds">📥 Load ID List</button>
+  <ul id="objectIdList" style="max-height: 200px; overflow-y: auto; font-size: 14px; color: #444;"></ul>
+
   <script>
     // 위치 자동 채우기
     navigator.geolocation.getCurrentPosition(pos => {
@@ -186,6 +190,40 @@
         alert("❌ Request Error: " + err.message);
       }
     });
+
+
+    async function fetchObjectIdList() {
+      try {
+        const res = await fetch("https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects", {
+          method: "GET",
+          headers: {
+            //"Authorization": `Bearer ${localStorage.getItem("id_token")}` // 있으면 사용, 없으면 생략
+          }
+        });
+
+        const data = await res.json();
+        const items = Array.isArray(data.body) ? data.body : JSON.parse(data.body);
+
+        const listEl = document.getElementById("objectIdList");
+        listEl.innerHTML = ""; // 초기화
+
+        items.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item.id;
+          listEl.appendChild(li);
+        });
+
+      } catch (err) {
+        console.error("❗ Failed to load object ID list:", err.message);
+        alert("❌ Failed to load object list");
+      }
+    }
+
+    // 페이지 로딩 시 실행
+    //document.addEventListener("DOMContentLoaded", fetchObjectIdList);
+    // 버튼 클릭 시 실행되도록 연결
+    document.getElementById("loadObjectIds").addEventListener("click", fetchObjectIdList);
+
   </script>
 </body>
 
