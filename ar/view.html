@@ -124,66 +124,75 @@
 
     <script>
         // data가져오기
-        //fetch('https://merkava5871.github.io/ar/images.json')
-        fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects')
-            .then(res => res.json())
-            //.then(data => {
-            .then(api => {
-                const data = JSON.parse(api.body);
-                console.log("✅ 받아온 데이터:", data); // 여기에 구조 로그 찍어보기
+        function fetchObjectsNearby(lat, lon) {
 
-                const scene = document.querySelector('a-scene');
-                data.forEach((item, i) => {
-                    //(data.Items || []).forEach((item, i) => {
-                    const entity = document.createElement('a-entity');
+            //fetch('https://merkava5871.github.io/ar/images.json')
+            fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects')
+                .then(res => res.json())
+                //.then(data => {
+                .then(api => {
+                    const data = JSON.parse(api.body);
+                    console.log("✅ 받아온 데이터:", data); // 여기에 구조 로그 찍어보기
 
-                    entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
-                    entity.setAttribute('geometry', item.geometry || 'primitive: plane');
-                    entity.setAttribute('material', item.material || 'color: red');
-                    entity.setAttribute('position', item.position || '0 0 0');
-                    entity.setAttribute('look-at', '[gps-camera]');
-                    entity.setAttribute('id', `entity-${i}`);
-                    //거리 기반 스케일 미적용시 scale 사용
-                    entity.setAttribute('scale', item.scale || '1 1 1');
-                    // entity.setAttribute('smooth-follow', 'factor: 0.1');
+                    const scene = document.querySelector('a-scene');
+                    data.forEach((item, i) => {
+                        //(data.Items || []).forEach((item, i) => {
+                        const entity = document.createElement('a-entity');
 
-                    // 👉 rotation 설정 (옵션)
-                    if (item.rotation) {
-                        entity.setAttribute('rotation', item.rotation);
-                    }
+                        entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
+                        entity.setAttribute('geometry', item.geometry || 'primitive: plane');
+                        entity.setAttribute('material', item.material || 'color: red');
+                        entity.setAttribute('position', item.position || '0 0 0');
+                        entity.setAttribute('look-at', '[gps-camera]');
+                        entity.setAttribute('id', `entity-${i}`);
+                        //거리 기반 스케일 미적용시 scale 사용
+                        entity.setAttribute('scale', item.scale || '1 1 1');
+                        // entity.setAttribute('smooth-follow', 'factor: 0.1');
 
-                    // 발견 오브젝트 이미지 다운로드 기능 설정
-                    //entity.addEventListener('click', () => {
-                    entity.addEventListener('touchstart', () => {
-                        const url = extractFromMaterial(item.material);
-                        const ext = url.split('.').pop().split('?')[0];
-                        const filename = `ar-content-${Date.now()}.${ext}`;
-                        downloadFile(url, filename);
+                        // 👉 rotation 설정 (옵션)
+                        if (item.rotation) {
+                            entity.setAttribute('rotation', item.rotation);
+                        }
+
+                        // 발견 오브젝트 이미지 다운로드 기능 설정
+                        //entity.addEventListener('click', () => {
+                        entity.addEventListener('touchstart', () => {
+                            const url = extractFromMaterial(item.material);
+                            const ext = url.split('.').pop().split('?')[0];
+                            const filename = `ar-content-${Date.now()}.${ext}`;
+                            downloadFile(url, filename);
+                        });
+
+                        // 거리 기반 스케일 적용
+                        // const base = (item.baseScale || '1 1 1').split(' ').map(Number);
+                        // entity.setAttribute('distance-scaler', {
+                        //     baseScale: { x: base[0], y: base[1], z: base[2] },
+                        //     maxDistance: item.maxDistance || 100
+                        // });
+
+                        scene.appendChild(entity);
                     });
-
-                    // 거리 기반 스케일 적용
-                    // const base = (item.baseScale || '1 1 1').split(' ').map(Number);
-                    // entity.setAttribute('distance-scaler', {
-                    //     baseScale: { x: base[0], y: base[1], z: base[2] },
-                    //     maxDistance: item.maxDistance || 100
-                    // });
-
-                    scene.appendChild(entity);
+                })
+                .catch(err => {
+                    console.error('❗ JSON 로딩 실패:', err);
                 });
-            })
-            .catch(err => {
-                console.error('❗ JSON 로딩 실패:', err);
-            });
+        }
 
 
         // 타겟 GPS 변수
         let targetLat = null;
         let targetLon = null;
 
+        let objectsLoaded = false;
+
+
         // 현재위치 표시
         const gpsDisplay = document.getElementById("gpsDisplay");
         navigator.geolocation.watchPosition(
             (pos) => {
+                currentLat = pos.coords.latitude;
+                currentLon = pos.coords.longitude;
+
                 const lat = pos.coords.latitude.toFixed(6);
                 const lon = pos.coords.longitude.toFixed(6);
                 const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "none";
@@ -205,6 +214,13 @@
                         hasArrived = false; // 다시 멀어지면 리셋
                     }
                 }
+
+                // ➕ GPS 처음 확인되었을 때만 fetch 실행
+                if (!objectsLoaded) {
+                    fetchObjectsNearby(currentLat, currentLon);
+                    objectsLoaded = true;
+                }
+
 
                 gpsDisplay.textContent =
                     `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n🗻 Alt: ${alt}\n📐 Angle: ${pitch}\n📏 Dis: ${distanceStr}`;
