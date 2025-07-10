@@ -158,6 +158,7 @@
                         //entity.addEventListener('click', () => {
                         entity.addEventListener('touchend', (e) => {
                             e.preventDefault(); // 기본 동작 방지 (중요!)
+                            alert("👆 터치 이벤트 발생!");
                             const url = extractFromMaterial(item.material);
                             const ext = url.split('.').pop().split('?')[0];
                             const filename = `ar-content-${Date.now()}.${ext}`;
