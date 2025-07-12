@@ -40,7 +40,16 @@
     <!-- 흔들림 보정할때 gpsMinAccuracy를 50으로 하는게 가이드인데 잘 안되는듯 -->
     <a-scene vr-mode-ui="enabled: false" embedded
         arjs="sourceType: webcam; gpsMinAccuracy: 50; debugUIEnabled: false;">
-        <a-camera gps-camera rotation-reader sky-detector cursor="rayOrigin: mouse"></a-camera>
+<!--         <a-camera gps-camera rotation-reader sky-detector cursor="rayOrigin: mouse"></a-camera> -->
+        <a-camera gps-camera rotation-reader sky-detector>
+          <a-entity cursor="rayOrigin: mouse"
+            raycaster="objects: .intersectable"
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+            material="color: black; shader: flat">
+          </a-entity>
+        </a-camera>
+
 
 
         <!-- 이미지 표시 객체 -->
@@ -95,7 +104,7 @@
 
         document.addEventListener("DOMContentLoaded", () => {
           const imageEl = document.getElementById("skyMessage");
-            alert("✅ 클릭됨!");
+            
 
           // 모바일과 PC 모두 대응
           imageEl.addEventListener("click", handleDownload);
@@ -103,13 +112,14 @@
 
           function handleDownload(e) {
             e.preventDefault();
+              alert("✅ 클릭됨!");
             const url = imageEl.getAttribute("src");
             const ext = url.split('.').pop().split('?')[0];
             const filename = `ar-content-${Date.now()}.${ext}`;
 
             // 모바일 호환을 위해 window.open 방식 사용
             window.open(url, '_blank');
-
+          }
 
     </script>
 
