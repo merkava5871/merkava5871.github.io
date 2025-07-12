@@ -42,8 +42,17 @@
         <!-- 하늘 향할때 메세지 -->
         <!-- <a-entity id="skyMessage" position="0 10 0"
             text="value: ☁️ 하늘을 향해 비추셨군요!; align: center; color: yellow; width: 6" visible="false"></a-entity> -->
-        <a-image id="skyMessage" position="0 0 0" rotation="90 0 0"
+<!--         <a-image id="skyMessage" position="0 0 0" rotation="90 0 0"
             src="https://merkava5871.github.io/ar/assets/BGSong.png" width="1" height="1" visible="true">
+        </a-image> -->
+        <a-image id="skyMessage"
+         position="0 0 0"
+         rotation="90 0 0"
+         src="https://merkava5871.github.io/ar/assets/BGSong.png"
+         width="1"
+         height="1"
+         visible="true"
+         class="intersectable">
         </a-image>
 
     </a-scene>
@@ -71,8 +80,6 @@
                 const rot = camera.getAttribute('rotation');
                 const pitch = rot ? rot.x.toFixed(1) + "°" : "measuring";
 
-
-
                 gpsDisplay.textContent =
                     `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n📐 Angle: ${pitch}`;
             },
@@ -83,21 +90,23 @@
         );
 
 
-        // 오브젝트 다운로드 
-        function downloadFile(url, filename) {
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.target = "_blank"; // 일부 모바일 브라우저에서 필요
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+          const imageEl = document.getElementById("skyMessage");
 
-        function extractFromMaterial(materialStr) {
-            const match = materialStr.match(/src:\s*(?:url\()?(\S+?)(?:\)|;|$)/);
-            return match ? match[1].replace(/['"]/g, '') : '';
-        }
+          // 모바일과 PC 모두 대응
+          imageEl.addEventListener("click", handleDownload);
+          imageEl.addEventListener("touchend", handleDownload);
+
+          function handleDownload(e) {
+            e.preventDefault();
+            const url = imageEl.getAttribute("src");
+            const ext = url.split('.').pop().split('?')[0];
+            const filename = `ar-content-${Date.now()}.${ext}`;
+
+            // 모바일 호환을 위해 window.open 방식 사용
+            window.open(url, '_blank');
+
+
 
 
     </script>
