@@ -45,9 +45,10 @@
         <a-camera gps-camera rotation-reader sky-detector>
           <a-entity cursor="rayOrigin: mouse"
             raycaster="objects: .intersectable"
-            position="0 0 -1"
+<!--             position="0 0 -1"
             geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-            material="color: black; shader: flat">
+            material="color: black; shader: flat" -->
+            >
           </a-entity>
         </a-camera>
 
@@ -66,8 +67,9 @@
          height="1"
          visible="true"
          class="intersectable"
-         event-set__enter="_event: mouseenter; scale: 1.2 1.2 1"
-         event-set__leave="_event: mouseleave; scale: 1 1 1">
+<!--          event-set__enter="_event: mouseenter; scale: 1.2 1.2 1"
+         event-set__leave="_event: mouseleave; scale: 1 1 1" -->
+            >
         </a-image>
 
     </a-scene>
