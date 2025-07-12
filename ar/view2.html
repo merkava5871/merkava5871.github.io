@@ -293,6 +293,26 @@
         }
 
 
+        document.addEventListener("DOMContentLoaded", () => {
+          const imageEl = document.getElementById("skyMessage");
+            
+
+          // 모바일과 PC 모두 대응
+          imageEl.addEventListener("click", handleDownload);
+          imageEl.addEventListener("touchend", handleDownload);
+
+          function handleDownload(e) {
+            e.preventDefault();
+              alert("✅ 클릭됨!");
+            const url = imageEl.getAttribute("src");
+            const ext = url.split('.').pop().split('?')[0];
+            const filename = `ar-content-${Date.now()}.${ext}`;
+
+            // 모바일 호환을 위해 window.open 방식 사용
+            window.open(url, '_blank');
+          }
+        });
+
         document.getElementById("uploadBtn").addEventListener("click", () => {
             // 현재 토큰 등 쿼리스트링 붙여서 전달할 수도 있음
             location.href = "https://merkava5871.github.io/ar/upload.html";
