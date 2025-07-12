@@ -86,11 +86,12 @@
 
                 const lat = pos.coords.latitude.toFixed(6);
                 const lon = pos.coords.longitude.toFixed(6);
-                const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "none";
+                // const alt = pos.coords.altitude !== null ? pos.coords.altitude.toFixed(1) + "m" : "none";
                 //기울기 표시
                 const camera = document.querySelector('[gps-camera]');
                 const rot = camera.getAttribute('rotation');
                 const pitch = rot ? rot.x.toFixed(1) + "°" : "measuring";
+
 
                 gpsDisplay.textContent =
                     `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n📐 Angle: ${pitch}`;
