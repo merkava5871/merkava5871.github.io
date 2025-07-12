@@ -143,11 +143,10 @@
                 //.then(data => {
                 .then(api => {
                     const data = JSON.parse(api.body);
-                    console.log("✅ 받아온 데이터:", data); // 여기에 구조 로그 찍어보기
+                    // console.log("✅ 받아온 데이터:", data); // 여기에 구조 로그 찍어보기
 
                     const scene = document.querySelector('a-scene');
                     data.forEach((item, i) => {
-                        //(data.Items || []).forEach((item, i) => {
                         const entity = document.createElement('a-entity');
 
                         entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
@@ -156,8 +155,8 @@
                         entity.setAttribute('position', item.position || '0 0 0');
                         entity.setAttribute('look-at', '[gps-camera]');
                         entity.setAttribute('id', `entity-${i}`);
-                        //거리 기반 스케일 미적용시 scale 사용
                         entity.setAttribute('scale', item.scale || '1 1 1');
+                        entity.setAttribute('class', 'intersectable');
                         // entity.setAttribute('smooth-follow', 'factor: 0.1');
 
                         // 👉 rotation 설정 (옵션)
@@ -166,16 +165,15 @@
                         }
 
                         // 발견 오브젝트 이미지 다운로드 기능 설정
-                        //entity.addEventListener('click', () => {
                         entity.addEventListener('touchend', (e) => {
                             e.preventDefault(); // 기본 동작 방지 (중요!)
                             alert("👆 터치 이벤트 발생!");
                             const url = extractFromMaterial(item.material);
                             const ext = url.split('.').pop().split('?')[0];
                             const filename = `ar-content-${Date.now()}.${ext}`;
-                            downloadFile(url, filename);
+                            window.open(url, '_blank'); // 모바일에서 안정적으로 작동
+                            // downloadFile(url, filename);
                         });
-
                         scene.appendChild(entity);
                     });
                 })
@@ -277,15 +275,15 @@
         }
 
         // 오브젝트 다운로드 
-        function downloadFile(url, filename) {
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.target = "_blank"; // 일부 모바일 브라우저에서 필요
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        // function downloadFile(url, filename) {
+        //     const link = document.createElement('a');
+        //     link.href = url;
+        //     link.download = filename;
+        //     link.target = "_blank"; // 일부 모바일 브라우저에서 필요
+        //     document.body.appendChild(link);
+        //     link.click();
+        //     document.body.removeChild(link);
+        // }
 
         function extractFromMaterial(materialStr) {
             const match = materialStr.match(/src:\s*(?:url\()?(\S+?)(?:\)|;|$)/);
@@ -293,25 +291,24 @@
         }
 
 
-        document.addEventListener("DOMContentLoaded", () => {
-          const imageEl = document.getElementById("skyMessage");
-            
+        // document.addEventListener("DOMContentLoaded", () => {
+        //   const imageEl = document.getElementById("skyMessage");           
 
-          // 모바일과 PC 모두 대응
-          imageEl.addEventListener("click", handleDownload);
-          imageEl.addEventListener("touchend", handleDownload);
+        //   // 모바일과 PC 모두 대응
+        //   imageEl.addEventListener("click", handleDownload);
+        //   imageEl.addEventListener("touchend", handleDownload);
 
-          function handleDownload(e) {
-            e.preventDefault();
-              alert("✅ 클릭됨!");
-            const url = imageEl.getAttribute("src");
-            const ext = url.split('.').pop().split('?')[0];
-            const filename = `ar-content-${Date.now()}.${ext}`;
+        //   function handleDownload(e) {
+        //     e.preventDefault();
+        //       alert("✅ 클릭됨!");
+        //     const url = imageEl.getAttribute("src");
+        //     const ext = url.split('.').pop().split('?')[0];
+        //     const filename = `ar-content-${Date.now()}.${ext}`;
 
-            // 모바일 호환을 위해 window.open 방식 사용
-            window.open(url, '_blank');
-          }
-        });
+        //     // 모바일 호환을 위해 window.open 방식 사용
+        //     window.open(url, '_blank');
+        //   }
+        // });
 
         document.getElementById("uploadBtn").addEventListener("click", () => {
             // 현재 토큰 등 쿼리스트링 붙여서 전달할 수도 있음
