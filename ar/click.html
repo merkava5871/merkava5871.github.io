@@ -7,7 +7,8 @@
 
 <!--     <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script> -->
     <script src='https://aframe.io/releases/1.7.1/aframe.min.js'></script>
-    <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+<!--     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
     <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
 
     <style>
@@ -35,7 +36,7 @@
 
     <!-- 흔들림 보정할때 gpsMinAccuracy를 50으로 하는게 가이드인데 잘 안되는듯 -->
     <a-scene vr-mode-ui="enabled: false" embedded
-        arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
+        arjs="sourceType: webcam; gpsMinAccuracy: 50; debugUIEnabled: false;">
         <a-camera gps-camera rotation-reader sky-detector cursor="rayOrigin: mouse"></a-camera>
 
 
