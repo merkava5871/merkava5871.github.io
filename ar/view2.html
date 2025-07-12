@@ -112,14 +112,22 @@
     <a-scene embedded 
         xr-mode-ui="enabled: false"
         arjs="sourceType: webcam; gpsMinAccuracy: 100; debugUIEnabled: false;">
-        <a-camera gps-camera rotation-reader sky-detector cursor="rayOrigin: mouse"></a-camera>
+<!--         <a-camera gps-camera rotation-reader sky-detector cursor="rayOrigin: mouse"></a-camera> -->
+    <a-camera gps-camera rotation-reader sky-detector>
+        <a-entity cursor="rayOrigin: mouse"
+            raycaster="objects: .intersectable"
+            visible="false"
+        >
+        </a-entity>
+    </a-camera>
 
 
         <!-- 이미지 표시 객체 -->
         <!-- 하늘 향할때 메세지 -->
         <!-- <a-entity id="skyMessage" position="0 10 0"
             text="value: ☁️ 하늘을 향해 비추셨군요!; align: center; color: yellow; width: 6" visible="false"></a-entity> -->
-        <a-image id="skyMessage" position="0 30 -3" rotation="90 0 0"
+<!--         <a-image id="skyMessage" position="0 30 -3" rotation="90 0 0" -->
+        <a-image id="skyMessage" position="0 0 0" rotation="0 90 0"
             src="https://merkava5871.github.io/ar/assets/BGSong.png" width="1" height="1" visible="true">          
         </a-image>
 
