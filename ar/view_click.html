@@ -165,15 +165,15 @@
                         }
 
                         // 발견 오브젝트 이미지 다운로드 기능 설정
-                        // entity.addEventListener('touchend', (e) => {
-                        //     e.preventDefault(); // 기본 동작 방지 (중요!)
-                        //     alert("👆 터치 이벤트 발생!");
-                        //     const url = extractFromMaterial(item.material);
-                        //     const ext = url.split('.').pop().split('?')[0];
-                        //     const filename = `ar-content-${Date.now()}.${ext}`;
-                        //     window.open(url, '_blank'); // 모바일에서 안정적으로 작동
-                        //     // downloadFile(url, filename);
-                        // });
+                         entity.addEventListener('touchend', (a) => {
+                            a.preventDefault(); // 기본 동작 방지 (중요!)
+                            alert("👆 터치 이벤트 발생!");
+                            const url = extractFromMaterial(item.material);
+                            const ext = url.split('.').pop().split('?')[0];
+                            const filename = `ar-content-${Date.now()}.${ext}`;
+                            window.open(url, '_blank'); // 모바일에서 안정적으로 작동
+                            // downloadFile(url, filename);
+                        });
                         scene.appendChild(entity);
                     });
                 })
@@ -300,7 +300,7 @@
 
           function handleDownload(e) {
             e.preventDefault();
-              alert("✅ 클릭됨!");
+              alert("✅ Now you got me!");
             const url = imageEl.getAttribute("src");
             const ext = url.split('.').pop().split('?')[0];
             const filename = `ar-content-${Date.now()}.${ext}`;
