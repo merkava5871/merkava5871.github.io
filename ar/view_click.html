@@ -149,7 +149,9 @@
 
                         entity.setAttribute('gps-entity-place', `latitude: ${item.latitude}; longitude: ${item.longitude}`);
                         entity.setAttribute('geometry', item.geometry || 'primitive: plane');
-                        entity.setAttribute('material', item.material || 'color: red');
+                        // entity.setAttribute('material', item.material || 'color: red');
+                        const materialStr = item.material || 'color: red';
+                        entity.setAttribute('material', `${materialStr}; transparent: true; alphaTest: 0.01`);
                         entity.setAttribute('position', item.position || '0 0 0');
                         entity.setAttribute('look-at', '[gps-camera]');
                         entity.setAttribute('id', `entity-${i}`);
@@ -162,14 +164,26 @@
                             entity.setAttribute('rotation', item.rotation);
                         }
 
+                        entity.addEventListener('mouseenter', () => {
+                          console.log("🎯 raycaster 감지됨");
+                        });
+
                         // 발견 오브젝트 이미지 다운로드 기능 설정
                          entity.addEventListener('touchend', (a) => {
                             a.preventDefault(); // 기본 동작 방지 (중요!)
                             alert("👆 터치 이벤트 발생!");
                             const url = extractFromMaterial(item.material);
+                            if (!url) {
+                              console.warn("❗ 이미지 URL 추출 실패");
+                              return;
+                            }
+
                             const ext = url.split('.').pop().split('?')[0];
                             const filename = `ar-content-${Date.now()}.${ext}`;
-                            window.open(url, '_blank'); // 모바일에서 안정적으로 작동
+                            // window.open(url, '_blank'); // 모바일에서 안정적으로 작동
+                            setTimeout(() => {
+                                window.open(url, '_blank');
+                            }, 0);
                             // downloadFile(url, filename);
                         });
                         scene.appendChild(entity);
