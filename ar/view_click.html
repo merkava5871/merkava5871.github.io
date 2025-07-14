@@ -117,7 +117,9 @@
         <a-entity cursor="rayOrigin: mouse"
             raycaster="objects: .intersectable"
             visible="false"
-        >
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+            material="color: black; shader: flat">
         </a-entity>
     </a-camera>
 
@@ -169,7 +171,7 @@
                         });
 
                         // 발견 오브젝트 이미지 다운로드 기능 설정
-                         entity.addEventListener('touchend', (a) => {
+                         entity.addEventListener('click', (a) => {
                             a.preventDefault(); // 기본 동작 방지 (중요!)
                             alert("👆 터치 이벤트 발생!");
                             const url = extractFromMaterial(item.material);
