@@ -136,8 +136,6 @@
     <script>
         // data가져오기
         function fetchObjectsNearby(lat, lon) {
-
-            //fetch('https://merkava5871.github.io/ar/images.json')
             fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects')
                 .then(res => res.json())
                 //.then(data => {
@@ -289,7 +287,6 @@
             const match = materialStr.match(/src:\s*(?:url\()?(\S+?)(?:\)|;|$)/);
             return match ? match[1].replace(/['"]/g, '') : '';
         }
-
 
         document.addEventListener("DOMContentLoaded", () => {
           const imageEl = document.getElementById("skyMessage");           
