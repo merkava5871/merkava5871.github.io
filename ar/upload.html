@@ -239,6 +239,53 @@
     // 버튼 클릭 시 실행되도록 연결
     document.getElementById("loadObjectIds").addEventListener("click", fetchObjectIdList);
 
+    const clientId = "1rm7ulr2vl74rfbm43ltjrj84p";
+    const domain = "https://ap-northeast-2cdd1nzonw.auth.ap-northeast-2.amazoncognito.com";
+    const redirectUri = "https://nyse.hae-szg.online/ar/view.html";
+
+    // URL에서 code 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+
+    if (code) {
+      fetch(`${domain}/oauth2/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `grant_type=authorization_code&client_id=${clientId}&code=${code}&redirect_uri=${encodeURIComponent(redirectUri)}`
+      })
+        .then(res => res.json())
+        .then(data => {
+          const newIdToken = data.id_token;
+          const storedIdToken = localStorage.getItem("idToken");
+
+          if (!newIdToken) {
+            alert("❗ 토큰을 받아오지 못했습니다.");
+            window.location.href = "https://merkava5871.github.io/ar/index.html";
+            return;
+          }
+
+          // ✅ 토큰 비교
+          if (storedIdToken !== newIdToken) {
+            alert("❗ 인증 토큰이 일치하지 않습니다. 다시 로그인해주세요.");
+            localStorage.removeItem("idToken");
+            window.location.href = "https://merkava5871.github.io/ar/index.html";
+            return;
+          }
+
+          console.log("✅ 인증 토큰 일치, 접근 허용");
+          // 이후 upload 기능 실행
+        })
+        .catch(err => {
+          console.error("❗ 토큰 요청 실패:", err);
+          window.location.href = "https://merkava5871.github.io/ar/index.html";
+        });
+    } else {
+      alert("❗ 로그인 코드가 없습니다. 다시 로그인해주세요.");
+      window.location.href = "https://merkava5871.github.io/ar/index.html";
+    }    
+
   </script>
 </body>
 
