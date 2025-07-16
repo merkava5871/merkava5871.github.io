@@ -81,7 +81,7 @@
 
     <button type="submit">🚀 Submit</button>
 
-    <button type="button" onclick="location.href='https://merkava5871.github.io/ar/view.html'">🕶️ AR View</button>
+    <button type="button" onclick="location.href=`https://nyse.hae-szg.online/ar/view.html?code=${code}`">🕶️ AR View</button>
   </form>
 
   <h3>🗂️ Existing Object IDs</h3>
@@ -239,9 +239,10 @@
     // 버튼 클릭 시 실행되도록 연결
     document.getElementById("loadObjectIds").addEventListener("click", fetchObjectIdList);
 
+    //cognito 인증 확인
     const clientId = "1rm7ulr2vl74rfbm43ltjrj84p";
     const domain = "https://ap-northeast-2cdd1nzonw.auth.ap-northeast-2.amazoncognito.com";
-    const redirectUri = "https://nyse.hae-szg.online/ar/view.html";
+    const redirectUri = "https://nyse.hae-szg.online/ar/upload.html";
 
     // URL에서 code 추출
     const urlParams = new URLSearchParams(window.location.search);
