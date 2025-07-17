@@ -149,7 +149,7 @@
             fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects', {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${idToken}`
+                    "Authorization": `Bearer ${storedIdToken}`
                 }
             })
                 .then(res => res.json())
