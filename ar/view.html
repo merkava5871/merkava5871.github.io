@@ -337,15 +337,30 @@
             location.href = `https://merkava5871.github.io/ar/upload.html?code=${code}`;
         });
 
+        //cognito 인증 확인
         const clientId = "1rm7ulr2vl74rfbm43ltjrj84p";
         const domain = "https://ap-northeast-2cdd1nzonw.auth.ap-northeast-2.amazoncognito.com";
-        const redirectUri = "https://nyse.hae-szg.online/ar/view.html";
+        const redirectUri = "https://merkava5871.github.io/ar/view.html";
 
         // URL에서 code 추출
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
+        const storedIdToken = localStorage.getItem("idToken");
+        console.log("저장된 토큰 :",storedIdToken);
 
-        if (code) {
+        // ✅ 토큰 유효성 검사 함수
+        function isTokenValid(token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const now = Math.floor(Date.now() / 1000);
+                return payload.exp && payload.exp > now;
+            } catch (e) {
+                return false;
+            }
+        }        
+
+        //code 있고 토큰 없거나 유효하지 않을경우 토큰 받아오기
+        if (code && !isTokenValid(storedIdToken)) {
             fetch(`${domain}/oauth2/token`, {
                 method: "POST",
                 headers: {
@@ -358,14 +373,21 @@
                     const idToken = data.id_token;
                     if (idToken) {
                         localStorage.setItem("idToken", idToken);
-                        console.log("✅ 로그인 성공, 토큰 저장됨");
+                        console.log("✅ 로그인 성공, 토큰 저장됨",idToken);
                     } else {
-                        alert("❗ 토큰을 받아오지 못했습니다.");
+                        alert("❗ 토큰을 받아오지 못했습니다..");
+                        window.location.href = "https://merkava5871.github.io/ar/index.html";
                     }
                 })
                 .catch(err => {
                     console.error("❗ 토큰 요청 실패:", err);
+                    window.location.href = "https://merkava5871.github.io/ar/index.html";
                 });
+    
+        } else if (code && isTokenValid(storedIdToken)) {
+            // ✅ 토큰이 있고 유효하면 인증 통과
+            console.log("✅ 기존 토큰 유효, 인증 통과",idToken);
+
         } else {
             alert("❗ 로그인 코드가 없습니다. 다시 로그인해주세요.");
             window.location.href = "https://merkava5871.github.io/ar/index.html";
