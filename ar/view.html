@@ -147,7 +147,19 @@
     <script>
         // data가져오기
         function fetchObjectsNearby(lat, lon) {
-            fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects')
+            // fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects')
+              if (!idToken) {
+    alert("❗인증 토큰이 없습니다. 다시 로그인해주세요.");
+    window.location.href = "https://nyse.hae-szg.online/ar/index.html";
+    return;
+  }
+
+  fetch('https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects', {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${idToken}`
+    }
+  })
                 .then(res => res.json())
                 //.then(data => {
                 .then(api => {
