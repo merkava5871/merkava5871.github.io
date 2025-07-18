@@ -56,7 +56,7 @@
     <label>Material</label>
     <input type="text" id="material"
       value="src: https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.png; side: double;">
-<!--     <small class="example">GIF:
+    <!--     <small class="example">GIF:
       <code>shader: gif; src: url(https://d2i253d5k7v4zj.cloudfront.net/uploads/sample.gif)</code></small> -->
 
     <label>Position</label>
@@ -81,7 +81,8 @@
 
     <button type="submit">🚀 Submit</button>
 
-    <button type="button" onclick="location.href=`https://merkava5871.github.io/ar/view.html?code=${code}`">🕶️ AR View</button>
+    <button type="button" onclick="location.href=`https://merkava5871.github.io/ar/view.html?code=${code}`">🕶️ AR
+      View</button>
   </form>
 
   <h3>🗂️ Existing Object IDs</h3>
@@ -173,6 +174,13 @@
 
     // object 데이터 조회 함수
     async function fetchObjectIdList() {
+      const idToken = localStorage.getItem("idToken");
+      console.log("idToken:", idToken);
+      if (!idToken) {
+        alert("❗인증 토큰이 없습니다. 다시 로그인해주세요.");
+        window.location.href = "https://nyse.hae-szg.online/ar/index.html";
+        return;
+      }
       try {
         const res = await fetch("https://4pigo50fm6.execute-api.ap-northeast-2.amazonaws.com/prod/objects", {
           method: "GET",
@@ -228,19 +236,19 @@
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const storedIdToken = localStorage.getItem("idToken");
-    console.log("저장된 토큰 :",storedIdToken);
+    console.log("저장된 토큰 :", storedIdToken);
 
     if (code && storedIdToken) {
       console.log("✅ 기존 토큰 유효, 인증 통과");
 
     } else if (code && !storedIdToken) {
-        alert("❗ 저장된 토큰이 없습니다.");
-        window.location.href = "https://merkava5871.github.io/ar/index.html";
+      alert("❗ 저장된 토큰이 없습니다.");
+      window.location.href = "https://merkava5871.github.io/ar/index.html";
 
     } else {
       alert("❗ 로그인 코드가 없습니다. 다시 로그인해주세요.");
       window.location.href = "https://merkava5871.github.io/ar/index.html";
-    }  
+    }
 
   </script>
 </body>
