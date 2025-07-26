@@ -30,6 +30,12 @@
             margin-top: -6px;
             margin-bottom: 10px;
         }
+
+        #visibleCheckbox {
+            margin-left: 5px;
+            transform: scale(1.2); /* 체크박스 크기 키우기 (선택) */
+    }
+
     </style>
 </head>
 
@@ -39,7 +45,7 @@
 
     <form id="uploadForm">
         <label for="visibleCheckbox">Visible</label>
-        <input type="checkbox" id="visibleCheckbox" checked style="display: inline-block; margin-left: 0;">
+        <input type="checkbox" id="visibleCheckbox" checked>
 
         <label>ID</label>
         <input type="text" id="id" value="shape-name-location-no" required />
