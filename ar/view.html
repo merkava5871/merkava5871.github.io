@@ -212,6 +212,11 @@
 
                     const scene = document.querySelector('a-scene');
                     data.forEach((item, i) => {
+                        // 표시하지 않기로 설정된 오브젝트는 건너뜀
+                        if (!(item.visible === 1 || item.visible === "1")) {
+                            //console.log(`🚫 표시되지 않음: ${item.title || "Unnamed Object"}`);
+                            return;
+                        }
                         const entity = document.createElement('a-entity');
 
                         //20250723 좌표 없는 오브젝트 표시
