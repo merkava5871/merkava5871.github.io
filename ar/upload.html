@@ -44,7 +44,7 @@
 <body>
     <!-- 업로드 상태 표시 영역 -->
     <div id="uploadStatus" style="margin-bottom: 10px; color: #333;"></div>
-    
+
     <h2>📍 Current Location</h2>
     <div id="currentLocation">GPS Loading...</div>
 
@@ -143,7 +143,7 @@
                     const materialStr = `src: ${cdnUrl}; side: double;`;
                     document.getElementById("material").value = materialStr;
 
-                    statusEl.textContent = "✅ 이미지 업로드 완료!";
+                    statusEl.textContent = "🖼️ 이미지 업로드 완료!";
                     statusEl.style.color = "green";
                 } else {
                     statusEl.textContent = "❌ 업로드 실패: " + (result.error || "Unknown error");
@@ -200,7 +200,7 @@
 
                 const result = await res.json();
                 if (res.ok) {
-                    statusEl.textContent = "✅ 데이터 등록 완료!";
+                    statusEl.textContent = "☀️ 데이터 등록 완료!";
                     statusEl.style.color = "green";
                     document.getElementById("uploadForm").reset();
                 } else {
