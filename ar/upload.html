@@ -42,9 +42,6 @@
 </head>
 
 <body>
-    <!-- 업로드 상태 표시 영역 -->
-    <div id="uploadStatus" style="margin-bottom: 10px; color: #333;"></div>
-
     <h2>📍 Current Location</h2>
     <div id="currentLocation">GPS Loading...</div>
 
@@ -100,6 +97,9 @@
         <button type="button" onclick="location.href=`https://merkava5871.github.io/ar/view.html?code=${code}`">🕶️ AR
             View</button>
     </form>
+
+    <!-- 업로드 상태 표시 영역 -->
+    <div id="uploadStatus" style="margin-bottom: 10px; color: #333;"></div>
 
     <h3>🗂️ Existing Object IDs</h3>
     <button type="button" id="loadObjectIds">📥 Load ID List</button>
