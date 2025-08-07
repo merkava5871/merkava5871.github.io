@@ -399,7 +399,7 @@
         // 타겟 GPS 변수
         let targetLat = null;
         let targetLon = null;
-        // let objectsLoaded = false;
+        let objectsLoaded = false;
 
 
         // 현재위치 표시
@@ -432,11 +432,10 @@
                 }
 
                 // GPS 처음 확인되었을 때만 fetch 실행
-                // 20250807 scan 버튼을 눌러 오브젝트 가져오게 수정함
-                //  if (!objectsLoaded) {
-                //         fetchObjectsNearby(currentLat, currentLon);
-                //         objectsLoaded = true;
-                //     }   
+                 if (!objectsLoaded) {
+                        fetchObjectsNearby(currentLat, currentLon);
+                        objectsLoaded = true;
+                    }   
 
                 gpsDisplay.textContent =
                     `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n🗻 Alt: ${alt}\n📐 Angle: ${pitch}\n⭐ Obj(50m): ${nearbyObjectCount}\n📏 Dis: ${distanceStr}`;
