@@ -13,18 +13,11 @@
     <!--     <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script> -->
 
     <style>
-        #gpsContainer {
+        #scanButton {
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 10px;
             z-index: 999;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-        }
-
-        #scanButton {
             padding: 6px 12px;
             font-size: 14px;
             background-color: #28a745;
@@ -36,6 +29,19 @@
 
         #scanButton:hover {
             background-color: #218838;
+        }
+
+        #scanStatus {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            font-family: monospace;
         }
 
         /* 현재위치 표시창 */
@@ -115,15 +121,16 @@
 <body style="margin: 0; overflow: hidden;">
     <div id="gpsDisplay">📍 GPS Loading...</div>
 
-    <div id="gpsContainer">
-        <div id="gpsDisplay"></div>
-        <button id="scanButton">🧭 Scan</button>
-    </div>
-
     <!-- 토글 버튼, 타겟 입력 창 펼치기기 -->
     <button id="toggleFormBtn" style="position: absolute; top: 136px; right: 10px; z-index: 999;">
         🎯 Input Target ▼
     </button>
+
+    <!-- 좌측 상단에 Scan 버튼 -->
+    <button id="scanButton">📡 Scan Nearby</button>
+
+    <!-- 좌측 상단에 메시지 표시 -->
+    <div id="scanStatus"></div>
 
     <button id="uploadBtn">📤 Upload</button>
 
@@ -214,16 +221,15 @@
 
         //20250807 scan 버튼 동작
         document.getElementById("scanButton").addEventListener("click", () => {
-            const statusEl = document.getElementById("gpsDisplay");
-            statusEl.textContent += `\n🔄 Scanning nearby objects...`;
+            const statusEl = document.getElementById("scanStatus");
 
             if (currentLat && currentLon) {
+                statusEl.textContent = "🔄 Scanning...";
                 fetchObjectsNearby(currentLat, currentLon);
             } else {
-                alert("❗ 현재 위치를 아직 확인하지 못했습니다.");
+                statusEl.textContent = "❗ 현재 위치를 아직 확인하지 못했습니다.";
             }
         });
-
 
         // 오브젝트 이미지 url 추출
         function extractFromMaterial(materialStr) {
