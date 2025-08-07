@@ -127,7 +127,7 @@
     </button>
 
     <!-- 좌측 상단에 Scan 버튼 -->
-    <button id="scanButton">📡 Scan Nearby</button>
+    <button id="scanButton">🧭 Scan</button>
 
     <!-- 좌측 상단에 메시지 표시 -->
     <div id="scanStatus"></div>
@@ -225,9 +225,16 @@
 
             if (currentLat && currentLon) {
                 statusEl.textContent = "🔄 Scanning...";
+                statusEl.style.opacity = 1;
+
                 fetchObjectsNearby(currentLat, currentLon);
             } else {
                 statusEl.textContent = "❗ 현재 위치를 아직 확인하지 못했습니다.";
+                statusEl.style.opacity = 1;
+
+                setTimeout(() => {
+                    statusEl.textContent = "";
+                }, 3000);
             }
         });
 
@@ -315,6 +322,7 @@
                             console.log("🎯 raycaster 감지됨");
                         });
 
+
                         // 발견 오브젝트 이미지 다운로드 기능 설정
                         entity.addEventListener('click', (a) => {
                             a.preventDefault(); // 기본 동작 방지 (중요!)
@@ -335,8 +343,15 @@
                         });
                         scene.appendChild(entity);
                     });
-                    // 조건 충족 오브젝트 최종 개수 저장
+                    // 20250807 조건 충족 오브젝트 최종 개수 저장
                     nearbyObjectCount = count;
+
+                    // 20250807 스캔 메시지 제거
+                    setTimeout(() => {
+                        const statusEl = document.getElementById("scanStatus");
+                        //statusEl.textContent = ""; // 메시지 내용 지움, 요소는 그대로 
+                        statusEl.style.display = "none"; //요소 자체를 숨김
+                    }, 500); // 0.5초 후 스캔 완료
 
                 })
                 .catch(err => {
