@@ -9,10 +9,35 @@
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <!--     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script> -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <!--     GIF는 aframe 0.9.2 버전에서 동작작 -->
+    <!--     GIF는 aframe 0.9.2 버전에서 동작 -->
     <!--     <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script> -->
 
     <style>
+        #gpsContainer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        #scanButton {
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #scanButton:hover {
+            background-color: #218838;
+        }
+
         /* 현재위치 표시창 */
         #gpsDisplay {
             position: absolute;
@@ -55,7 +80,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 128, 0, 0.85);
+            background: rgba(146, 238, 146, 0.85);
             color: #fff;
             padding: 20px 40px;
             font-size: 22px;
@@ -89,6 +114,11 @@
 
 <body style="margin: 0; overflow: hidden;">
     <div id="gpsDisplay">📍 GPS Loading...</div>
+
+    <div id="gpsContainer">
+        <div id="gpsDisplay"></div>
+        <button id="scanButton">🧭 Scan</button>
+    </div>
 
     <!-- 토글 버튼, 타겟 입력 창 펼치기기 -->
     <button id="toggleFormBtn" style="position: absolute; top: 136px; right: 10px; z-index: 999;">
@@ -181,6 +211,19 @@
             alert("❗ 로그인 코드가 없습니다. 다시 로그인해주세요.");
             window.location.href = "https://merkava5871.github.io/ar/index.html";
         }
+
+        //20250807 scan 버튼 동작
+        document.getElementById("scanButton").addEventListener("click", () => {
+            const statusEl = document.getElementById("gpsDisplay");
+            statusEl.textContent += `\n🔄 Scanning nearby objects...`;
+
+            if (currentLat && currentLon) {
+                fetchObjectsNearby(currentLat, currentLon);
+            } else {
+                alert("❗ 현재 위치를 아직 확인하지 못했습니다.");
+            }
+        });
+
 
         // 오브젝트 이미지 url 추출
         function extractFromMaterial(materialStr) {
@@ -332,7 +375,7 @@
         // 타겟 GPS 변수
         let targetLat = null;
         let targetLon = null;
-        let objectsLoaded = false;
+        // let objectsLoaded = false;
 
 
         // 현재위치 표시
@@ -365,10 +408,11 @@
                 }
 
                 // GPS 처음 확인되었을 때만 fetch 실행
-                if (!objectsLoaded) {
-                    fetchObjectsNearby(currentLat, currentLon);
-                    objectsLoaded = true;
-                }
+                // 20250807 scan 버튼을 눌러 오브젝트 가져오게 수정함
+                //  if (!objectsLoaded) {
+                //         fetchObjectsNearby(currentLat, currentLon);
+                //         objectsLoaded = true;
+                //     }   
 
                 gpsDisplay.textContent =
                     `↔️ Lat: ${lat}\n↕️ Lon: ${lon}\n🗻 Alt: ${alt}\n📐 Angle: ${pitch}\n⭐ Obj(50m): ${nearbyObjectCount}\n📏 Dis: ${distanceStr}`;
