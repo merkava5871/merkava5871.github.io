@@ -42,6 +42,9 @@
             font-size: 13px;
             border-radius: 6px;
             font-family: monospace;
+            display: none;
+            /* 처음엔 숨김 */
+
         }
 
         /* 현재위치 표시창 */
@@ -225,14 +228,15 @@
 
             if (currentLat && currentLon) {
                 statusEl.textContent = "🔄 Scanning...";
-                statusEl.style.opacity = 1;
+                statusEl.style.display = "block";
 
                 fetchObjectsNearby(currentLat, currentLon);
             } else {
                 statusEl.textContent = "❗ 현재 위치를 아직 확인하지 못했습니다.";
-                statusEl.style.opacity = 1;
+                statusEl.style.display = "block";
 
                 setTimeout(() => {
+                    statusEl.style.display = "none";
                     statusEl.textContent = "";
                 }, 3000);
             }
@@ -349,10 +353,9 @@
                     // 20250807 스캔 메시지 제거
                     setTimeout(() => {
                         const statusEl = document.getElementById("scanStatus");
-                        //statusEl.textContent = ""; // 메시지 내용 지움, 요소는 그대로 
+                        statusEl.textContent = ""; // 메시지 내용 지움, 요소는 그대로 
                         statusEl.style.display = "none"; //요소 자체를 숨김
                     }, 500); // 0.5초 후 스캔 완료
-
                 })
                 .catch(err => {
                     console.error('❗ JSON 로딩 실패:', err);
