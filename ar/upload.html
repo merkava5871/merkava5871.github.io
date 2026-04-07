@@ -102,7 +102,13 @@
             View</button>
     </form>
     <!-- Upload & Submit 20260407 -->
-    <button id="uploadAndSubmitBtn">📦 Upload & Submit</button>
+    <!-- <button id="uploadAndSubmitBtn">📦 Upload & Submit</button> -->
+    <input type="file" id="imageFileAuto" accept="image/*" style="display:none">
+    <label for="imageFileAuto" id="uploadAndSubmitBtn"
+        style="cursor:pointer; color:#808181; text-decoration:underline;">
+        📦 Upload & Submit
+    </label>
+
 
 
     <!-- 업로드 상태 표시 영역 -->
@@ -331,14 +337,11 @@
     //Upload & Submit-20260407
     <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
     <script>
-        document.getElementById("uploadAndSubmitBtn").addEventListener("click", async () => {
+        document.getElementById("imageFileAuto").addEventListener("change", async (e) => {
             const statusEl = document.getElementById("uploadStatus");
-            const file = document.getElementById("imageFile").files[0];
+            const file = e.target.files[0];
+            if (!file) return;
 
-            if (!file) {
-                alert("❗ 이미지 파일을 선택해주세요.");
-                return;
-            }
 
             // 1. EXIF 메타데이터에서 GPS 추출
             let lat, lon;
